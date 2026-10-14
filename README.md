@@ -2,16 +2,23 @@
 
 Сервис для проведения UX-исследований: регистрация, папки и тесты, конструктор из блоков, публичная ссылка для респондентов и сохранение результатов.
 
-## Запуск
+## Деплой на Vercel
 
-Нужен Node.js ≥ 22.13 (используется встроенный `node:sqlite`). Внешних зависимостей нет.
+Vercel не хранит файлы между запросами, поэтому данные лежат в Postgres.
+
+1. В проекте Vercel откройте **Storage → Create Database → Neon (Postgres)** и подключите базу к проекту. Vercel сам добавит переменную `DATABASE_URL` (или `POSTGRES_URL`).
+2. Сделайте **Redeploy**. Таблицы создаются автоматически при первом запросе.
+
+Статика берётся из `public/`, API — это одна serverless-функция `api/index.js` (маршруты `/api/*`), остальные пути отдают `index.html`.
+
+## Локальный запуск
+
+Нужны Node.js ≥ 20 и любая база Postgres.
 
 ```bash
-npm start            # http://localhost:3000
-PORT=8080 DATA_DIR=/var/lib/ux npm start
+npm install
+DATABASE_URL=postgres://user:pass@localhost:5432/ux npm start   # http://localhost:3000
 ```
-
-База SQLite хранится в `data/ux.db` (или в `$DATA_DIR`).
 
 ## Возможности
 

@@ -85,7 +85,7 @@ export function confirmDialog(text, okLabel = 'Удалить') {
 
 export const fmtDate = (ts) => new Date(ts).toLocaleString('ru-RU', { dateStyle: 'short', timeStyle: 'short' });
 
-export function readImage(file, maxSide = 1400) {
+export function readImage(file, maxSide = 1200) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
@@ -95,7 +95,7 @@ export function readImage(file, maxSide = 1400) {
       c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
       URL.revokeObjectURL(url);
-      resolve(c.toDataURL('image/jpeg', 0.82));
+      resolve(c.toDataURL('image/jpeg', 0.75));
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Не удалось прочитать изображение')); };
     img.src = url;
