@@ -2,6 +2,20 @@ import { h, api, toast, modal, prompt, confirmDialog, fmtDate } from './util.js'
 import { TYPES, PALETTE, createBlock } from './blocks.js';
 
 const app = document.getElementById('app');
+
+// переключатель темы (токены baseui: data-theme="light|dark")
+const themeBtn = document.createElement('button');
+themeBtn.className = 'theme-toggle';
+themeBtn.title = 'Сменить тему';
+const paintTheme = () => { themeBtn.textContent = document.documentElement.dataset.theme === 'dark' ? '☀' : '☾'; };
+themeBtn.addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('theme', next); } catch { /* storage unavailable */ }
+  paintTheme();
+});
+document.body.append(themeBtn);
+paintTheme();
 const state = { user: null };
 
 // ---------- роутер ----------

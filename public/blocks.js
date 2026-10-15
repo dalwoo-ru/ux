@@ -67,7 +67,7 @@ function heatTable(rowsLabels, colLabels, getCount, total) {
       colLabels.map((_, ci) => {
         const n = getCount(ri, ci);
         const a = total ? n / total : 0;
-        return h('td', { class: 'heat', style: { background: `rgba(109,94,245,${(a * 0.7).toFixed(2)})`, color: a > 0.55 ? '#fff' : 'inherit' } }, n || '');
+        return h('td', { class: 'heat', style: { background: `rgba(87,93,246,${(a * 0.7).toFixed(2)})`, color: a > 0.55 ? '#fff' : 'inherit' } }, n || '');
       }))))));
 }
 const noAnswers = () => h('p', { class: 'muted' }, 'Пока нет ответов');
