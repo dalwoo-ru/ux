@@ -1,3 +1,4 @@
+import { ChipGroup } from '../ui/Controls';
 import { NumberField, TextField } from '../ui/Field';
 import type { BlockDef } from './definition';
 import { Bars, NoAnswers } from './shared';
@@ -8,23 +9,23 @@ export const scale: BlockDef<'scale'> = {
   create: () => ({ title: 'Оцените по шкале', description: '', required: false, min: 1, max: 5, minLabel: 'Совсем не нравится', maxLabel: 'Очень нравится' }),
   Editor: ({ block, update }) => (
     <>
-      <div className="row" style={{ alignItems: 'flex-start' }}>
-        <NumberField label="От" value={block.min} min={0} max={1} onChange={(min) => update({ min })} />
-        <NumberField label="До" value={block.max} min={3} max={10} onChange={(max) => update({ max })} />
+      <div className={s.twoCols}>
+        <NumberField label="От (0 или 1)" value={block.min} min={0} max={1} onChange={(min) => update({ min })} />
+        <NumberField label="До (3–10)" value={block.max} min={3} max={10} onChange={(max) => update({ max })} />
       </div>
-      <div className="row" style={{ alignItems: 'flex-start' }}>
+      <div className={s.twoCols}>
         <TextField label="Подпись слева" value={block.minLabel} onChange={(minLabel) => update({ minLabel })} />
         <TextField label="Подпись справа" value={block.maxLabel} onChange={(maxLabel) => update({ maxLabel })} />
       </div>
     </>
   ),
   Respond: ({ block, value, onChange }) => {
-    const nums = Array.from({ length: block.max - block.min + 1 }, (_, i) => block.min + i);
+    const options = Array.from({ length: block.max - block.min + 1 }, (_, i) => ({ value: String(block.min + i), label: String(block.min + i) }));
     return (
       <div>
-        <div className={s.scale}>
-          {nums.map((n) => <button key={n} type="button" className={s.scaleBtn} aria-pressed={value === n} onClick={() => onChange(n)}>{n}</button>)}
-        </div>
+        {/* шкала — ChipGroup baseui в режиме одиночного выбора */}
+        <ChipGroup options={options} variant="outlined" value={value === undefined ? [] : [String(value)]}
+          onValueChange={(v) => { const next = v.find((x) => x !== String(value)) ?? v[0]; if (next !== undefined) onChange(Number(next)); }} />
         <div className={s.scaleLabels}><span>{block.minLabel}</span><span>{block.maxLabel}</span></div>
       </div>
     );

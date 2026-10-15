@@ -32,11 +32,13 @@ export function AuthPage({ register }: { register?: boolean }) {
         <div style={{ marginBottom: 'var(--baseui-Space-L)' }}><Logo /></div>
         <h1>{register ? 'Регистрация' : 'Вход'}</h1>
         <p className="muted" style={{ margin: '4px 0 var(--baseui-Space-L)' }}>{register ? 'Создайте аккаунт, чтобы собирать тесты' : 'Войдите, чтобы продолжить'}</p>
-        {register && <TextField label="Имя" value={name} onChange={setName} placeholder="Как вас зовут" />}
-        <TextField label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" />
-        <TextField label="Пароль" type="password" value={password} onChange={setPassword} placeholder="Минимум 6 символов" />
+        <div className={s.authForm}>
+        {register && <TextField label="Имя" value={name} onChange={setName} autoComplete="name" />}
+        <TextField label="Email" type="email" value={email} onChange={setEmail} autoComplete="email" />
+        <TextField label="Пароль" type="password" value={password} onChange={setPassword} caption={register ? 'Минимум 6 символов' : undefined} autoComplete={register ? 'new-password' : 'current-password'} actionLabel="Показать/скрыть пароль" />
         {error && <div className="error" role="alert">{error}</div>}
-        <Button type="submit" variant="primary" size="md" disabled={busy} style={{ width: '100%' }}>{register ? 'Зарегистрироваться' : 'Войти'}</Button>
+        <Button type="submit" variant="primary" size="medium" fullWidth disabled={busy} loading={busy}>{register ? 'Зарегистрироваться' : 'Войти'}</Button>
+        </div>
         <p className="muted" style={{ textAlign: 'center', marginTop: 'var(--baseui-Space-M)' }}>
           {register ? 'Уже есть аккаунт? ' : 'Нет аккаунта? '}
           <Link to={register ? '/login' : '/register'}>{register ? 'Войти' : 'Зарегистрироваться'}</Link>

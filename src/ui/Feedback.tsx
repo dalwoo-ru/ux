@@ -1,29 +1,16 @@
-import { Dialog } from '@base-ui/react/dialog';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Button, IconButton } from './Button';
-import { Icon } from './Icon';
+import { Button } from './Button';
 import { TextField } from './Field';
-import s from './Feedback.module.css';
+import { Modal as BaseuiModal } from './baseui.generated';
 
-/** Модальное окно (Dialog) в стилистике baseui Modal. */
-export function Modal({ open, onClose, title, children, wide, footer }:
-  { open: boolean; onClose: () => void; title?: string; children: ReactNode; wide?: boolean; footer?: ReactNode }) {
+/** Modal baseui: title/subtitle, primaryAction/secondaryAction — готовые кнопки. */
+export function Modal({ open, onClose, title, subtitle, children, primary, secondary }:
+  { open: boolean; onClose: () => void; title?: string; subtitle?: string; children?: ReactNode; primary?: ReactNode; secondary?: ReactNode }) {
   return (
-    <Dialog.Root open={open} onOpenChange={(o) => { if (!o) onClose(); }}>
-      <Dialog.Portal>
-        <Dialog.Backdrop className={s.backdrop} />
-        <Dialog.Viewport className={s.viewport}>
-          <Dialog.Popup className={wide ? s.popupWide : s.popup}>
-            <div className={s.header}>
-              {title ? <Dialog.Title className={s.title}>{title}</Dialog.Title> : <span />}
-              <IconButton aria-label="Закрыть" onClick={onClose}><Icon name="XClose" /></IconButton>
-            </div>
-            <div className={s.body}>{children}</div>
-            {footer && <div className={s.footer}>{footer}</div>}
-          </Dialog.Popup>
-        </Dialog.Viewport>
-      </Dialog.Portal>
-    </Dialog.Root>
+    <BaseuiModal open={open} onOpenChange={(o) => { if (!o) onClose(); }} title={title} subtitle={subtitle} header={title ? 'close' : 'close'}
+      primaryAction={primary} secondaryAction={secondary}>
+      {children}
+    </BaseuiModal>
   );
 }
 
@@ -43,21 +30,20 @@ export const useUi = () => {
   return c;
 };
 
-function PromptBody({ ask, onDone }: { ask: Extract<Ask, { kind: 'prompt' }>; onDone: () => void }) {
+function PromptModal({ ask, done }: { ask: Extract<Ask, { kind: 'prompt' }>; done: (v: string | null) => void }) {
   const [v, setV] = useState(ask.initial);
-  const finish = (val: string | null) => { ask.resolve(val); onDone(); };
   return (
-    <form onSubmit={(e) => { e.preventDefault(); finish(v.trim() || null); }}>
-      <TextField value={v} onChange={setV} autoFocus />
-      <div className="row" style={{ justifyContent: 'flex-end' }}>
-        <Button type="button" onClick={() => finish(null)}>Отмена</Button>
-        <Button type="submit" variant="primary">Готово</Button>
-      </div>
-    </form>
+    <Modal open onClose={() => done(null)} title={ask.title}
+      primary={<Button onClick={() => done(v.trim() || null)}>Готово</Button>}
+      secondary={<Button variant="secondary" onClick={() => done(null)}>Отмена</Button>}>
+      <form onSubmit={(e) => { e.preventDefault(); done(v.trim() || null); }}>
+        <TextField label="Название" value={v} onChange={setV} autoFocus />
+      </form>
+    </Modal>
   );
 }
 
-/** Провайдер тостов и промис-диалогов (prompt / confirm). */
+/** Провайдер тостов и промис-диалогов (prompt / confirm) на baseui Modal. */
 export function UiProvider({ children }: { children: ReactNode }) {
   const [msg, setMsg] = useState<string | null>(null);
   const [ask, setAsk] = useState<Ask | null>(null);
@@ -76,27 +62,28 @@ export function UiProvider({ children }: { children: ReactNode }) {
     confirm: (text, ok = 'Удалить') => new Promise((resolve) => setAsk({ kind: 'confirm', text, ok, resolve })),
   }), [toast]);
 
-  const dismiss = () => {
-    if (ask?.kind === 'prompt') ask.resolve(null);
-    if (ask?.kind === 'confirm') ask.resolve(false);
+  const finish = (v: string | boolean | null) => {
+    if (ask) (ask.resolve as (x: string | boolean | null) => void)(v);
     setAsk(null);
   };
-  const confirmAsk = ask?.kind === 'confirm' ? ask : null;
 
   return (
     <Ctx.Provider value={api}>
       {children}
-      <Modal open={!!ask} onClose={dismiss} title={ask?.kind === 'prompt' ? ask.title : undefined}
-        footer={confirmAsk && (
-          <>
-            <Button onClick={dismiss}>Отмена</Button>
-            <Button variant="primary" onClick={() => { confirmAsk.resolve(true); setAsk(null); }}>{confirmAsk.ok}</Button>
-          </>
-        )}>
-        {ask?.kind === 'prompt' && <PromptBody key={ask.title + ask.initial} ask={ask} onDone={() => setAsk(null)} />}
-        {confirmAsk && <p>{confirmAsk.text}</p>}
-      </Modal>
-      {msg && <div className={s.toast} role="status">{msg}</div>}
+      {ask?.kind === 'prompt' && <PromptModal key={ask.title + ask.initial} ask={ask} done={finish} />}
+      {ask?.kind === 'confirm' && (
+        <Modal open onClose={() => finish(false)} title={ask.text}
+          primary={<Button onClick={() => finish(true)}>{ask.ok}</Button>}
+          secondary={<Button variant="secondary" onClick={() => finish(false)}>Отмена</Button>} />
+      )}
+      {msg && <div role="status" style={toastStyle}>{msg}</div>}
     </Ctx.Provider>
   );
 }
+
+// В baseui нет компонента Toast — собран из токенов.
+const toastStyle: React.CSSProperties = {
+  position: 'fixed', bottom: 24, left: '50%', transform: 'translateX(-50%)', zIndex: 2000,
+  background: 'var(--baseui-Extensions-Background-InversePrimary)', color: 'var(--baseui-Text-and-Icon-OnColor)',
+  padding: '12px 20px', borderRadius: 'var(--baseui-Radius-S)', boxShadow: 'var(--baseui-Shadow-M)', font: 'var(--baseui-Typography-Text-14-Semi-Bold)',
+};

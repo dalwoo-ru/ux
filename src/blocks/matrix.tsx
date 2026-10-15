@@ -1,4 +1,5 @@
-import { Checkbox, Radio, RadioGroup } from '../ui/Controls';
+import { Checkbox as BaseuiCheckbox, RadioGroup } from '../ui/baseui.generated';
+import { Checkbox } from '../ui/Controls';
 import type { BlockDef } from './definition';
 import { textOf } from './definition';
 import { HeatTable, ListEditor, NoAnswers } from './shared';
@@ -25,23 +26,24 @@ export const matrix: BlockDef<'matrix'> = {
         <table className={s.matrix}>
           <thead><tr><th />{block.cols.map((c) => <th key={c.id}>{c.text}</th>)}</tr></thead>
           <tbody>
-            {block.rows.map((r) => (block.multiple
-              ? (
-                <tr key={r.id}>
-                  <td>{r.text}</td>
-                  {block.cols.map((c) => {
-                    const cur = ans[r.id] ?? [];
-                    return <td key={c.id}><Checkbox checked={cur.includes(c.id)} onChange={(on) => onChange({ ...ans, [r.id]: on ? [...cur, c.id] : cur.filter((x) => x !== c.id) })} /></td>;
-                  })}
-                </tr>
-              )
-              : (
-                // единственный выбор: RadioGroup сама рендерится как <tr>
-                <RadioGroup key={r.id} render={<tr />} value={ans[r.id]?.[0] ?? ''} onChange={(v) => onChange({ ...ans, [r.id]: [v] })}>
-                  <td>{r.text}</td>
-                  {block.cols.map((c) => <td key={c.id}><Radio value={c.id} /></td>)}
-                </RadioGroup>
-              )))}
+            {block.rows.map((r) => (
+              <tr key={r.id}>
+                <td>{r.text}</td>
+                {block.cols.map((c) => {
+                  const cur = ans[r.id] ?? [];
+                  return (
+                    <td key={c.id}>
+                      {block.multiple
+                        ? <BaseuiCheckbox aria-label={`${r.text}: ${c.text}`} checked={cur.includes(c.id)}
+                            onCheckedChange={(on) => onChange({ ...ans, [r.id]: on ? [...cur, c.id] : cur.filter((x) => x !== c.id) })} />
+                        // у Radio baseui нет собственного checked — отмеченность задаёт группа; одна ячейка = группа из одной опции
+                        : <RadioGroup options={[{ value: c.id, label: '' }]} value={cur[0] === c.id ? c.id : null}
+                            onValueChange={() => onChange({ ...ans, [r.id]: [c.id] })} />}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

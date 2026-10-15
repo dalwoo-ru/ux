@@ -19,7 +19,7 @@ export const preference: BlockDef<'preference'> = {
           onChange={(patch) => update({ images: block.images.map((x) => (x.id === im.id ? { ...x, ...patch } : x)) })}
           onRemove={block.images.length > 2 ? () => update({ images: block.images.filter((_, j) => j !== i) }) : undefined} />
       ))}
-      <Button size="xs" onClick={() => update({ images: [...block.images, { id: uid(), src: '', caption: '' }] })}><Icon name="Plus" size={16} />Добавить изображение</Button>
+      <Button variant="secondary" size="xsmall" startIcon={<Icon name="Plus" size={16} />} onClick={() => update({ images: [...block.images, { id: uid(), src: '', caption: '' }] })}>Добавить изображение</Button>
     </div>
   ),
   Respond: ({ block, value, onChange }) => (

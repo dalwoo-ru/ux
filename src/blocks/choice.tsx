@@ -1,5 +1,4 @@
-import { Checkbox, Radio, RadioGroup } from '../ui/Controls';
-import { cx } from '../ui/cx';
+import { Checkbox, CheckboxGroup, RadioGroup } from '../ui/Controls';
 import type { BlockDef } from './definition';
 import { textOf } from './definition';
 import { Bars, ListEditor, NoAnswers } from './shared';
@@ -18,22 +17,11 @@ export const choice: BlockDef<'choice'> = {
     </>
   ),
   Respond: ({ block, value, onChange }) => {
+    const options = block.options.map((o) => ({ value: o.id, label: o.text || '—' }));
     const sel = value ?? [];
-    if (block.multiple) {
-      return (
-        <div>
-          {block.options.map((o) => (
-            <Checkbox key={o.id} checked={sel.includes(o.id)} className={cx(s.choice, sel.includes(o.id) && s.choiceSel)}
-              onChange={(on) => onChange(on ? [...sel, o.id] : sel.filter((x) => x !== o.id))}>{o.text || '—'}</Checkbox>
-          ))}
-        </div>
-      );
-    }
-    return (
-      <RadioGroup value={sel[0] ?? ''} onChange={(v) => onChange([v])}>
-        {block.options.map((o) => <Radio key={o.id} value={o.id} className={cx(s.choice, sel[0] === o.id && s.choiceSel)}>{o.text || '—'}</Radio>)}
-      </RadioGroup>
-    );
+    return block.multiple
+      ? <CheckboxGroup options={options} value={sel} onValueChange={onChange} />
+      : <RadioGroup options={options} value={sel[0] ?? null} onValueChange={(v) => onChange([v])} />;
   },
   Results: ({ block, values }) => (values.length
     ? <Bars rows={block.options.map((o) => [o.text || '—', values.filter((v) => v.includes(o.id)).length])} total={values.length} />

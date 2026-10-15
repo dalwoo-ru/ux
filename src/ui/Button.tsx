@@ -1,18 +1,22 @@
-import { Button as BaseButton } from '@base-ui/react/button';
-import type { ComponentProps } from 'react';
-import { cx } from './cx';
-import s from './Button.module.css';
+import { Link, type LinkProps } from 'react-router-dom';
+import type { ComponentProps, ReactNode } from 'react';
+import { Button as BaseuiButton } from './baseui.generated';
 
-type Look = { variant?: 'primary' | 'secondary' | 'ghost'; size?: 'xs' | 'sm' | 'md'; danger?: boolean };
+/** Кнопка baseui (variant: primary | secondary | text; size: large | medium | small | xsmall). */
+export const Button = BaseuiButton;
+export type ButtonProps = ComponentProps<typeof BaseuiButton>;
 
-/** Классы кнопки — чтобы стилизовать и <Link>/<a> так же, как <Button>. */
-export const buttonClass = ({ variant = 'secondary', size = 'sm', danger }: Look = {}, extra?: string) =>
-  cx(s.button, s[variant], s[size], danger && s.danger, extra);
-
-export function Button({ variant, size, danger, className, ...props }: Look & ComponentProps<typeof BaseButton>) {
-  return <BaseButton {...props} className={buttonClass({ variant, size, danger }, className as string | undefined)} />;
+/** Иконочная кнопка: baseui Button variant="text" только с иконкой. Подпись — обязательно (aria-label). */
+export function IconButton({ label, children, ...props }: Omit<ButtonProps, 'children' | 'aria-label'> & { label: string; children: ReactNode }) {
+  return <BaseuiButton variant="text" size="xsmall" aria-label={label} title={label} {...props}>{children}</BaseuiButton>;
 }
 
-export function IconButton({ className, ...props }: ComponentProps<typeof BaseButton>) {
-  return <BaseButton {...props} className={cx(s.iconButton, className as string | undefined)} />;
+/** Кнопка baseui как ссылка роутера (Base UI `render`). */
+export function LinkButton({ to, ...props }: Omit<ButtonProps, 'render' | 'nativeButton'> & { to: LinkProps['to'] }) {
+  return <BaseuiButton {...props} nativeButton={false} render={<Link to={to} />} />;
+}
+
+/** Кнопка baseui как внешняя ссылка. */
+export function AnchorButton({ href, ...props }: Omit<ButtonProps, 'render' | 'nativeButton'> & { href: string }) {
+  return <BaseuiButton {...props} nativeButton={false} render={<a href={href} target="_blank" rel="noreferrer" />} />;
 }

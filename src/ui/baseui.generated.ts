@@ -1,0 +1,36 @@
+// Сгенерировано scripts/sync-baseui.mjs. Не править вручную.
+import type { BaseuiComponent } from './baseui-types';
+import type { ButtonProps, TextFieldProps, CheckboxProps, CheckboxGroupProps, RadioProps, RadioGroupProps, SwitchProps, ModalProps, TagProps, ChipProps, ChipGroupProps, ListProps, ListItemProps, AvatarProps, BadgeProps, SelectProps } from './baseui-types';
+import ButtonStory from '../../vendor/baseui/lib/Button.stories-BIZ8i_Er.js';
+import TextFieldStory from '../../vendor/baseui/lib/TextField.stories-JboKGoC9.js';
+import CheckboxStory from '../../vendor/baseui/lib/Checkbox.stories-CjVZ5VOE.js';
+import CheckboxGroupStory from '../../vendor/baseui/lib/CheckboxGroup.stories-DyCBCBrP.js';
+import RadioStory from '../../vendor/baseui/lib/Radio.stories-ByX4his4.js';
+import RadioGroupStory from '../../vendor/baseui/lib/RadioGroup.stories-DVXazEy6.js';
+import SwitchStory from '../../vendor/baseui/lib/Switch.stories-UfYPEzH7.js';
+import ModalStory from '../../vendor/baseui/lib/Modal.stories-BG7Qmigd.js';
+import TagStory from '../../vendor/baseui/lib/Tag.stories-3UvEDDiu.js';
+import ChipStory from '../../vendor/baseui/lib/Chip.stories-BFj78RSq.js';
+import ChipGroupStory from '../../vendor/baseui/lib/ChipGroup.stories-DmXtmuTG.js';
+import ListStory from '../../vendor/baseui/lib/List.stories-Alo3K1f2.js';
+import ListItemStory from '../../vendor/baseui/lib/ListItem.stories-Dq00OmrP.js';
+import AvatarStory from '../../vendor/baseui/lib/Avatar.stories-BJh8m-el.js';
+import BadgeStory from '../../vendor/baseui/lib/Badge.stories-f_dinpre.js';
+import SelectStory from '../../vendor/baseui/lib/Select.stories-vOU6jfFc.js';
+
+export const Button: BaseuiComponent<ButtonProps> = ButtonStory.component;
+export const TextField: BaseuiComponent<TextFieldProps> = TextFieldStory.component;
+export const Checkbox: BaseuiComponent<CheckboxProps> = CheckboxStory.component;
+export const CheckboxGroup: BaseuiComponent<CheckboxGroupProps> = CheckboxGroupStory.component;
+export const Radio: BaseuiComponent<RadioProps> = RadioStory.component;
+export const RadioGroup: BaseuiComponent<RadioGroupProps> = RadioGroupStory.component;
+export const Switch: BaseuiComponent<SwitchProps> = SwitchStory.component;
+export const Modal: BaseuiComponent<ModalProps> = ModalStory.component;
+export const Tag: BaseuiComponent<TagProps> = TagStory.component;
+export const Chip: BaseuiComponent<ChipProps> = ChipStory.component;
+export const ChipGroup: BaseuiComponent<ChipGroupProps> = ChipGroupStory.component;
+export const List: BaseuiComponent<ListProps> = ListStory.component;
+export const ListItem: BaseuiComponent<ListItemProps> = ListItemStory.component;
+export const Avatar: BaseuiComponent<AvatarProps> = AvatarStory.component;
+export const Badge: BaseuiComponent<BadgeProps> = BadgeStory.component;
+export const Select: BaseuiComponent<SelectProps> = SelectStory.component;

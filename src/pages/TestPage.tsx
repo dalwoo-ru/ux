@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../api';
 import { BASIC_BLOCKS, BLOCKS, LOCKED_GROUPS, createBlock, defOf } from '../blocks/registry';
 import { trackSave } from '../lib/save';
 import { fmtDate, fmtDuration, uid } from '../lib/util';
-import { Button, IconButton, buttonClass } from '../ui/Button';
+import { AnchorButton, Button, IconButton, LinkButton } from '../ui/Button';
 import { Checkbox, Switch } from '../ui/Controls';
 import { Modal, useUi } from '../ui/Feedback';
+import { List, ListItem, Tag } from '../ui/baseui.generated';
 import { TextField } from '../ui/Field';
 import { Icon } from '../ui/Icon';
 import { Tabs } from '../ui/Tabs';
@@ -69,7 +70,7 @@ export function TestPage() {
     <div className={s.page}>
       <Topbar>
         <span className="muted small">{SAVE_TEXT[save]}</span>
-        <Link to="/" className={buttonClass({ variant: 'ghost', size: 'xs' })}><Icon name="ArrowLeft" size={16} />Тесты</Link>
+        <LinkButton to="/" variant="text" size="xsmall" startIcon={<Icon name="ArrowLeft" size={16} />}>Тесты</LinkButton>
         <Tabs value={tab} onChange={(v) => { void flush(); setParams(v === 'build' ? {} : { tab: v }); }}
           items={[{ value: 'build', label: 'Конструктор' }, { value: 'results', label: 'Результаты' }, { value: 'share', label: 'Поделиться' }]} />
       </Topbar>
@@ -117,7 +118,7 @@ function Builder({ test, edit }: { test: Test; edit: (p: Partial<Pick<Test, 'tit
 
   return (
     <div className={s.editor}>
-      <input className={s.titleInput} value={test.title} placeholder="Название теста" aria-label="Название теста" onChange={(e) => edit({ title: e.target.value })} />
+      <TextField variant="standard" label="Название теста" value={test.title} onChange={(title) => edit({ title })} />
       <p className="muted" style={{ marginBottom: 'var(--baseui-Space-S)' }}>Респонденты увидят блоки в том порядке, в котором они расположены.</p>
 
       {blocks.map((b, i) => {
@@ -133,16 +134,16 @@ function Builder({ test, edit }: { test: Test; edit: (p: Partial<Pick<Test, 'tit
               <span className={s.blockTitle}>{b.title || 'Без названия'}</span>
               <span className="muted small">{def.label}</span>
               <span className="row" style={{ gap: 0 }} onClick={(e) => e.stopPropagation()}>
-                <IconButton aria-label="Вверх" disabled={i === 0} onClick={() => move(i, -1)}><Icon name="ArrowUp" size={18} /></IconButton>
-                <IconButton aria-label="Вниз" disabled={i === blocks.length - 1} onClick={() => move(i, 1)}><Icon name="ArrowDown" size={18} /></IconButton>
-                <IconButton aria-label="Дублировать" onClick={() => duplicate(i)}><Icon name="Copy01" size={18} /></IconButton>
-                <IconButton aria-label="Удалить блок" onClick={async () => { if (await confirm('Удалить блок?')) edit({ blocks: blocks.filter((x) => x.id !== b.id) }); }}><Icon name="Trash01" size={18} /></IconButton>
+                <IconButton label="Вверх" disabled={i === 0} onClick={() => move(i, -1)}><Icon name="ArrowUp" size={18} /></IconButton>
+                <IconButton label="Вниз" disabled={i === blocks.length - 1} onClick={() => move(i, 1)}><Icon name="ArrowDown" size={18} /></IconButton>
+                <IconButton label="Дублировать" onClick={() => duplicate(i)}><Icon name="Copy01" size={18} /></IconButton>
+                <IconButton label="Удалить блок" onClick={async () => { if (await confirm('Удалить блок?')) edit({ blocks: blocks.filter((x) => x.id !== b.id) }); }}><Icon name="Trash01" size={18} /></IconButton>
               </span>
             </div>
             {open && (
               <div className={s.blockBody}>
                 <TextField label={def.titleLabel ?? 'Вопрос / заголовок'} value={b.title} onChange={(title) => patch(b.id, { title })} />
-                <TextField label="Описание (необязательно)" multiline rows={2} value={b.description} onChange={(description) => patch(b.id, { description })} />
+                <TextField label="Описание (необязательно)" multiline minRows={2} value={b.description} onChange={(description) => patch(b.id, { description })} />
                 <div style={{ marginBottom: 'var(--baseui-Space-M)' }}><Checkbox checked={b.required} onChange={(required) => patch(b.id, { required })}>Обязательный блок</Checkbox></div>
                 <def.Editor block={b} update={(p: Partial<Block>) => patch(b.id, p)} />
               </div>
@@ -151,31 +152,21 @@ function Builder({ test, edit }: { test: Test; edit: (p: Partial<Pick<Test, 'tit
         );
       })}
       {!blocks.length && <div className={s.empty}>Добавьте первый блок, чтобы начать собирать тест</div>}
-      <div ref={endRef} className={s.addBlock}><Button variant="primary" onClick={() => setPalette(true)}><Icon name="Plus" size={18} />Добавить блок</Button></div>
+      <div ref={endRef} className={s.addBlock}><Button variant="primary" size="small" startIcon={<Icon name="Plus" size={20} />} onClick={() => setPalette(true)}>Добавить блок</Button></div>
 
-      <Modal open={palette} onClose={() => setPalette(false)} title="Добавить блок" wide>
-        <div className={s.palette}>
-          <div>
-            <h4>Базовые блоки</h4>
-            {BASIC_BLOCKS.map((t) => (
-              <button key={t} type="button" className={s.palItem} onClick={() => add(t)}>
-                <span className={s.palTitle}><span className={s.bico}><Icon name={BLOCKS[t].icon} size={18} /></span>{BLOCKS[t].label}</span>
-                <span className={cx(s.palDesc, 'muted small')}>{BLOCKS[t].desc}</span>
-              </button>
-            ))}
-          </div>
-          {LOCKED_GROUPS.map((g) => (
-            <div key={g.group}>
-              <h4>{g.group}</h4>
-              {g.items.map((it) => (
-                <div key={it.label} className={cx(s.palItem, s.palLocked)} title="Скоро будет доступно">
-                  <span className={s.palTitle}><span className={s.bico}><Icon name={it.icon} size={18} /></span>{it.label}<Icon name="Lock01" size={16} /></span>
-                  <span className={cx(s.palDesc, 'muted small')}>{it.desc}</span>
-                </div>
-              ))}
-            </div>
+      <Modal open={palette} onClose={() => setPalette(false)} title="Добавить блок">
+        <List title="Базовые блоки" divider>
+          {BASIC_BLOCKS.map((t) => (
+            <ListItem key={t} icon={<Icon name={BLOCKS[t].icon} size={24} />} subtitle={BLOCKS[t].desc} onClick={() => add(t)}>{BLOCKS[t].label}</ListItem>
           ))}
-        </div>
+        </List>
+        {LOCKED_GROUPS.map((g, gi) => (
+          <List key={g.group} title={g.group} divider={gi < LOCKED_GROUPS.length - 1}>
+            {g.items.map((it) => (
+              <ListItem key={it.label} disabled icon={<Icon name={it.icon} size={24} />} subtitle={it.desc} details={<Icon name="Lock01" size={20} />}>{it.label}</ListItem>
+            ))}
+          </List>
+        ))}
       </Modal>
     </div>
   );
@@ -194,7 +185,7 @@ function Share({ test, onPublished }: { test: Test; onPublished: (p: boolean) =>
     } catch (e) { toast((e as Error).message); }
   };
   return (
-    <div className={s.shareBox}>
+    <div className={cx(s.shareBox, s.shareStack)}>
       <h2 style={{ marginBottom: 'var(--baseui-Space-M)' }}>Поделиться тестом</h2>
       <Switch checked={test.published} onChange={toggle}><b>Опубликован</b></Switch>
       <p className="muted" style={{ margin: 'var(--baseui-Space-S) 0' }}>
@@ -203,14 +194,14 @@ function Share({ test, onPublished }: { test: Test; onPublished: (p: boolean) =>
           : 'Тест в черновике: по ссылке респонденты увидят, что он закрыт. Вы можете открыть его в режиме предпросмотра.'}
       </p>
       <div className="row" style={{ margin: 'var(--baseui-Space-S) 0 var(--baseui-Space-M)', alignItems: 'flex-start' }}>
-        <div className="grow"><TextField value={url} readOnly aria-label="Ссылка" className={s.noMargin} onFocus={(e) => e.target.select()} /></div>
-        <Button variant="primary" size="md" onClick={async () => {
+        <div className="grow"><TextField label="Ссылка на тест" value={url} readOnly onFocus={(e) => e.target.select()} /></div>
+        <Button variant="primary" size="medium" startIcon={<Icon name="Link01" size={20} />} onClick={async () => {
           try { await navigator.clipboard.writeText(url); toast('Ссылка скопирована'); } catch { toast('Скопируйте ссылку вручную'); }
-        }}><Icon name="Link01" size={18} />Копировать</Button>
+        }}>Копировать</Button>
       </div>
-      <a className={buttonClass({ size: 'sm' })} href={`/t/${test.share_token}?preview=1`} target="_blank" rel="noreferrer">
-        <Icon name="Eye" size={18} />Предпросмотр (ответы не сохраняются)
-      </a>
+      <AnchorButton variant="secondary" size="small" href={`/t/${test.share_token}?preview=1`} startIcon={<Icon name="Eye" size={20} />}>
+        Предпросмотр (ответы не сохраняются)
+      </AnchorButton>
     </div>
   );
 }
@@ -251,8 +242,8 @@ function Results({ test }: { test: Test }) {
       <div className={s.pageHead}>
         <h2>{test.title}</h2>
         <div className="row">
-          <Button onClick={load}><Icon name="RefreshCw01" size={18} />Обновить</Button>
-          <Button onClick={exportCsv} disabled={!responses.length}><Icon name="Download01" size={18} />CSV</Button>
+          <Button variant="secondary" size="small" startIcon={<Icon name="RefreshCw01" size={20} />} onClick={load}>Обновить</Button>
+          <Button variant="secondary" size="small" startIcon={<Icon name="Download01" size={20} />} onClick={exportCsv} disabled={!responses.length}>CSV</Button>
         </div>
       </div>
       <div className={s.stats}>
@@ -286,9 +277,9 @@ function Results({ test }: { test: Test }) {
                 {responses.map((r) => (
                   <tr key={r.id}>
                     <td>{r.id}</td><td>{fmtDate(r.started_at)}</td>
-                    <td>{r.completed ? 'Завершено' : 'Не завершено'}</td>
+                    <td><Tag variant="filled" color={r.completed ? 'brand' : 'secondary'} size="small">{r.completed ? 'Завершено' : 'Не завершено'}</Tag></td>
                     <td>{r.finished_at ? fmtDuration(r.finished_at - r.started_at) : '—'}</td>
-                    <td><IconButton aria-label="Удалить прохождение" onClick={async () => {
+                    <td><IconButton label="Удалить прохождение" onClick={async () => {
                       if (await confirm('Удалить это прохождение?')) { await api.deleteResponse(test.id, r.id); load(); }
                     }}><Icon name="Trash01" size={18} /></IconButton></td>
                   </tr>

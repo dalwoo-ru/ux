@@ -17,18 +17,20 @@ export function ListEditor({ label, items, onChange, addLabel, min = 1, placehol
   return (
     <div className={s.group}>
       <FieldLabel>{label}</FieldLabel>
-      {items.map((it, i) => (
-        <div className="row" key={it.id} style={{ marginBottom: 'var(--baseui-Space-XS)' }}>
-          <div className="grow">
-            <TextField value={it.text} placeholder={placeholder} className={s.noMargin}
-              onChange={(text) => onChange(items.map((x) => (x.id === it.id ? { ...x, text } : x)))} />
+      <div className="stack" style={{ gap: 'var(--baseui-Space-XS)', marginBottom: 'var(--baseui-Space-XS)' }}>
+        {items.map((it, i) => (
+          <div className="row" key={it.id}>
+            <div className="grow">
+              <TextField label={`${placeholder} ${i + 1}`} value={it.text} size="small"
+                onChange={(text) => onChange(items.map((x) => (x.id === it.id ? { ...x, text } : x)))} />
+            </div>
+            <IconButton label="Удалить" disabled={items.length <= min} onClick={() => onChange(items.filter((_, j) => j !== i))}>
+              <Icon name="XClose" size={20} />
+            </IconButton>
           </div>
-          <IconButton aria-label="Удалить" disabled={items.length <= min} onClick={() => onChange(items.filter((_, j) => j !== i))}>
-            <Icon name="XClose" size={18} />
-          </IconButton>
-        </div>
-      ))}
-      <Button size="xs" onClick={() => onChange([...items, { id: uid(), text: '' }])}><Icon name="Plus" size={16} />{addLabel}</Button>
+        ))}
+      </div>
+      <Button variant="secondary" size="xsmall" startIcon={<Icon name="Plus" size={16} />} onClick={() => onChange([...items, { id: uid(), text: '' }])}>{addLabel}</Button>
     </div>
   );
 }
@@ -42,18 +44,17 @@ export function ImageEditor({ img, onChange, withCaption, onRemove }:
     <div className={s.imgEdit}>
       {img.src ? <img src={img.src} alt="" /> : <div className={s.imgPlaceholder}><Icon name="Image01" /></div>}
       <div className="grow stack" style={{ gap: 'var(--baseui-Space-XS)' }}>
-        <TextField className={s.noMargin} placeholder="Ссылка на изображение или загрузите файл"
-          value={img.src.startsWith('data:') ? '' : img.src} onChange={(src) => onChange({ src: src.trim() })} />
-        {withCaption && <TextField className={s.noMargin} placeholder="Подпись (необязательно)" value={img.caption || ''} onChange={(caption) => onChange({ caption })} />}
+        <TextField label="Ссылка на изображение" size="small" value={img.src.startsWith('data:') ? '' : img.src} onChange={(src) => onChange({ src: src.trim() })} />
+        {withCaption && <TextField label="Подпись (необязательно)" size="small" value={img.caption || ''} onChange={(caption) => onChange({ caption })} />}
         <div className="row">
-          <Button size="xs" onClick={() => file.current?.click()}>Загрузить файл</Button>
+          <Button variant="secondary" size="xsmall" startIcon={<Icon name="Image01" size={16} />} onClick={() => file.current?.click()}>Загрузить файл</Button>
           <input ref={file} type="file" accept="image/*" hidden onChange={async (e) => {
             const f = e.target.files?.[0];
             e.target.value = '';
             if (!f) return;
             try { onChange({ src: await readImage(f) }); } catch (err) { toast((err as Error).message); }
           }} />
-          {onRemove && <Button size="xs" danger onClick={onRemove}>Удалить</Button>}
+          {onRemove && <Button variant="text" size="xsmall" onClick={onRemove} startIcon={<Icon name="Trash01" size={16} />}>Удалить</Button>}
         </div>
       </div>
     </div>
@@ -88,7 +89,7 @@ export function HeatTable({ rows, cols, count, total }: { rows: string[]; cols: 
               {cols.map((_, ci) => {
                 const n = count(ri, ci);
                 const a = total ? n / total : 0;
-                return <td key={ci} className={s.heat} style={{ background: `rgba(87,93,246,${(a * 0.7).toFixed(2)})`, color: a > 0.55 ? '#fff' : 'inherit' }}>{n || ''}</td>;
+                return <td key={ci} className={s.heat} style={{ background: `color-mix(in srgb, var(--baseui-Background-Accent) ${Math.round(a * 75)}%, transparent)`, color: a > 0.55 ? 'var(--baseui-Text-and-Icon-OnColor)' : 'inherit' }}>{n || ''}</td>;
               })}
             </tr>
           ))}

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
 import { Checkbox } from '../ui/Controls';
+import { Chip } from '../ui/baseui.generated';
 import { TextField } from '../ui/Field';
 import { cx } from '../ui/cx';
 import type { BlockDef } from './definition';
@@ -25,9 +26,12 @@ function CardSortRespond({ block, value, onChange }: { block: CardSortBlock; val
     onChange(next);
   };
   const chip = (id: string, text: string) => (
-    <button key={id} type="button" className={cx(s.chip, selected === id && s.chipSel)} draggable
+    // карточка — Chip baseui (нажатие выбирает карточку, перетаскивание — нативный drag&drop)
+    <div key={id} className={s.chipWrap} draggable
       onDragStart={(e) => { e.dataTransfer.setData('text/plain', id); setSelected(id); }}
-      onClick={(e) => { e.stopPropagation(); setSelected(selected === id ? null : id); }}>{text || '—'}</button>
+      onClick={(e) => e.stopPropagation()}>
+      <Chip variant="outlined" size="small" pressed={selected === id} onPressedChange={(on) => setSelected(on ? id : null)}>{text || '—'}</Chip>
+    </div>
   );
   const zone = (title: string | null, cat: string | null, content: React.ReactNode) => (
     <div className={cx(s.zone, selected && cat !== null && s.zoneTarget)} key={cat ?? '__pool'}
@@ -51,8 +55,8 @@ function CardSortRespond({ block, value, onChange }: { block: CardSortBlock; val
         {cats.map((cat) => zone(cat, cat, block.cards.filter((c) => ans[c.id] === cat).map((c) => chip(c.id, c.text))))}
         {block.open && (
           <form className="row" onSubmit={(e) => { e.preventDefault(); addCat(); }}>
-            <div className="grow"><TextField placeholder="Название новой категории" value={draft} onChange={setDraft} className={s.noMargin} /></div>
-            <Button type="submit">+</Button>
+            <div className="grow"><TextField label="Название новой категории" size="small" value={draft} onChange={setDraft} /></div>
+            <Button type="submit" variant="secondary" size="small">Добавить</Button>
           </form>
         )}
       </div>

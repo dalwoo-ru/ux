@@ -67,7 +67,7 @@ export function Respondent() {
         <div className={s.respCard}>
           <h1>{test.title}</h1>
           <p className={s.desc}>{blocks.length ? `Вопросов: ${blocks.length}. Это займёт пару минут.` : 'В этом тесте пока нет блоков.'}</p>
-          {blocks.length > 0 && <Button variant="primary" size="md" disabled={busy} onClick={() => guard(async () => { await persist(false, answers); setStep(0); })}>Начать</Button>}
+          {blocks.length > 0 && <Button variant="primary" size="medium" loading={busy} onClick={() => guard(async () => { await persist(false, answers); setStep(0); })}>Начать</Button>}
         </div>
       </div>
     );
@@ -96,8 +96,8 @@ export function Respondent() {
         <def.Respond key={b.id} block={b} value={value} onChange={(v: unknown) => { setError(''); setAnswers((a) => ({ ...a, [b.id]: v })); }} />
         {error && <div className="error" role="alert">{error}</div>}
         <div className={s.respActions}>
-          <Button size="md" disabled={step === 0 || busy} onClick={() => { setError(''); setStep(step - 1); }}><Icon name="ArrowLeft" size={18} />Назад</Button>
-          <Button variant="primary" size="md" disabled={busy} onClick={next}>{last ? 'Завершить' : 'Далее'}</Button>
+          <Button variant="secondary" size="medium" disabled={step === 0 || busy} startIcon={<Icon name="ArrowLeft" size={20} />} onClick={() => { setError(''); setStep(step - 1); }}>Назад</Button>
+          <Button variant="primary" size="medium" loading={busy} onClick={next}>{last ? 'Завершить' : 'Далее'}</Button>
         </div>
       </div>
     </div>
