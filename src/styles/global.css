@@ -1,0 +1,24 @@
+@import './tokens.css';
+
+* { box-sizing: border-box; }
+html, body, #root { min-height: 100%; }
+html, body { margin: 0; }
+body { font: var(--baseui-Typography-Text-16-Regular); color: var(--baseui-Text-and-Icon-Primary); background: var(--baseui-Background-Secondary); -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, p { margin: 0; }
+h1 { font: var(--baseui-Typography-Header-28); }
+h2 { font: var(--baseui-Typography-Header-24); }
+h3 { font: var(--baseui-Typography-Text-16-Semi-Bold); }
+button, input, select, textarea { font: inherit; color: inherit; }
+a { color: var(--baseui-Text-and-Icon-Accent); text-decoration: none; }
+:focus-visible { outline: 2px solid var(--baseui-Text-and-Icon-Accent); outline-offset: 2px; }
+table { border-collapse: collapse; }
+img { max-width: 100%; }
+
+/* утилиты */
+.row { display: flex; gap: var(--baseui-Space-XS); align-items: center; }
+.wrap { flex-wrap: wrap; }
+.grow { flex: 1; min-width: 0; }
+.muted { color: var(--baseui-Text-and-Icon-Secondary); }
+.small { font: var(--baseui-Typography-Text-14-Regular); }
+.error { color: var(--baseui-Extensions-Text-and-Icon-Error); font: var(--baseui-Typography-Text-14-Regular); margin: var(--baseui-Space-XS) 0; }
+.stack { display: flex; flex-direction: column; gap: var(--baseui-Space-M); }

@@ -1,0 +1,3 @@
+.tag { display: inline-flex; align-items: center; gap: var(--baseui-Space-XXS); padding: var(--baseui-Space-XXS) var(--baseui-Space-XS); border-radius: var(--baseui-Radius-S); font: var(--baseui-Typography-Text-14-Regular); white-space: nowrap; }
+.secondary { background: var(--baseui-Background-Secondary); }
+.success { background: var(--baseui-Extensions-Background-LightSuccess); color: var(--baseui-Extensions-Text-and-Icon-AlwaysDark); }

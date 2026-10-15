@@ -1,0 +1,7 @@
+.field { display: flex; flex-direction: column; gap: var(--baseui-Space-XXS); width: 100%; margin-bottom: var(--baseui-Space-M); }
+.label { font: var(--baseui-Typography-Text-14-Regular); color: var(--baseui-Text-and-Icon-Secondary); padding-left: 2px; }
+.control { width: 100%; min-height: 48px; padding: 12px 14px; border: 2px solid transparent; border-radius: var(--baseui-Radius-M); background: var(--baseui-Background-Secondary);
+  outline: none; font: var(--baseui-Typography-Text-16-Regular); color: var(--baseui-Text-and-Icon-Primary); transition: border-color .15s; }
+.control::placeholder { color: var(--baseui-Text-and-Icon-Secondary); opacity: 1; }
+.control:focus { border-color: var(--baseui-Extensions-Border-Selected); }
+.multiline { resize: vertical; min-height: 96px; }

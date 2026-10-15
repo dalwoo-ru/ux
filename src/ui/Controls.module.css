@@ -1,0 +1,17 @@
+.label { display: inline-flex; align-items: center; gap: var(--baseui-Space-S); cursor: pointer; user-select: none; }
+.checkbox, .radio { all: unset; box-sizing: border-box; flex: none; width: 24px; height: 24px; border: 2px solid var(--baseui-Border-Accent); background: var(--baseui-Background-Primary);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color .15s, border-color .15s; }
+.checkbox { border-radius: var(--baseui-Radius-XS); }
+.radio { border-radius: var(--baseui-Radius-FullRound); }
+.checkbox[data-checked], .radio[data-checked] { background: var(--baseui-Text-and-Icon-Primary); border-color: var(--baseui-Text-and-Icon-Primary); }
+.checkbox:focus-visible, .radio:focus-visible { box-shadow: inset 0 0 0 2px var(--baseui-Text-and-Icon-Accent); }
+.check { width: 12px; height: 7px; border: 2px solid var(--baseui-Background-Primary); border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--baseui-Background-Primary); }
+
+/* Switch: track 40×24, thumb 16 */
+.track { all: unset; box-sizing: border-box; flex: none; width: 40px; height: 24px; padding: var(--baseui-Space-XXS); border-radius: var(--baseui-Radius-FullRound); background: var(--baseui-Background-Tertiary);
+  display: flex; align-items: center; cursor: pointer; transition: background-color .15s; }
+.track[data-checked] { background: var(--baseui-Extensions-Background-InversePrimary); }
+.track:focus-visible { box-shadow: inset 0 0 0 2px var(--baseui-Text-and-Icon-Accent); }
+.thumb { width: 16px; height: 16px; border-radius: 50%; background: var(--baseui-Text-and-Icon-OnColor); transition: transform .15s; }
+.track[data-checked] .thumb { transform: translateX(16px); background: var(--baseui-Background-Primary); }

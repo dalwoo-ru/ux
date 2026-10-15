@@ -1,0 +1,5 @@
+.list { display: flex; gap: var(--baseui-Space-XS); }
+.tab { all: unset; box-sizing: border-box; cursor: pointer; padding: 7px var(--baseui-Space-S); border-radius: var(--baseui-Radius-L); font: var(--baseui-Typography-Text-14-Regular); }
+.tab:hover { background: var(--baseui-Background-Secondary); }
+.tab[data-active] { background: var(--baseui-Extensions-Background-InversePrimary); color: var(--baseui-Text-and-Icon-OnColor); }
+.tab:focus-visible { outline: 2px solid var(--baseui-Text-and-Icon-Accent); outline-offset: 2px; }

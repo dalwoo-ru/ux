@@ -1,0 +1,12 @@
+.backdrop { position: fixed; inset: 0; z-index: 1000; background: var(--baseui-Extensions-Background-OverlayDark); }
+.viewport { position: fixed; inset: 0; z-index: 1001; display: flex; align-items: center; justify-content: center; padding: var(--baseui-Space-M); overflow: auto; }
+.popup, .popupWide { width: 100%; max-height: calc(100dvh - 32px); display: flex; flex-direction: column; overflow: hidden; border-radius: var(--baseui-Radius-XL2);
+  background: var(--baseui-Background-Primary); color: var(--baseui-Text-and-Icon-Primary); box-shadow: var(--baseui-Shadow-L); }
+.popup { max-width: 460px; }
+.popupWide { max-width: 1100px; background: var(--baseui-Background-Secondary); }
+.header { display: flex; justify-content: space-between; align-items: center; padding: var(--baseui-Space-S) var(--baseui-Space-S) 0 var(--baseui-Space-L); }
+.title { font: var(--baseui-Typography-Header-20); padding: var(--baseui-Space-S) 0; }
+.body { padding: var(--baseui-Space-XS) var(--baseui-Space-L) var(--baseui-Space-L); overflow: auto; min-height: 0; }
+.footer { display: flex; justify-content: flex-end; gap: var(--baseui-Space-XS); padding: 0 var(--baseui-Space-L) var(--baseui-Space-L); }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 2000; background: var(--baseui-Extensions-Background-InversePrimary); color: var(--baseui-Text-and-Icon-OnColor);
+  padding: 12px 20px; border-radius: var(--baseui-Radius-S); box-shadow: var(--baseui-Shadow-M); font: var(--baseui-Typography-Text-14-Semi-Bold); }
