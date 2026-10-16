@@ -1,4 +1,5 @@
 import { Button } from '../ui/Button';
+import { SelectableCard } from '../ui/baseui';
 import { Icon } from '../ui/Icon';
 import { uid } from '../lib/util';
 import type { BlockDef } from './definition';
@@ -19,16 +20,18 @@ export const preference: BlockDef<'preference'> = {
           onChange={(patch) => update({ images: block.images.map((x) => (x.id === im.id ? { ...x, ...patch } : x)) })}
           onRemove={block.images.length > 2 ? () => update({ images: block.images.filter((_, j) => j !== i) }) : undefined} />
       ))}
-      <Button variant="secondary" size="xsmall" startIcon={<Icon name="Plus" size={16} />} onClick={() => update({ images: [...block.images, { id: uid(), src: '', caption: '' }] })}>Добавить изображение</Button>
+      <Button size="xsm" icon={<Icon name="Plus" size={16} />} onClick={() => update({ images: [...block.images, { id: uid(), src: '', caption: '' }] })}>Добавить изображение</Button>
     </div>
   ),
   Respond: ({ block, value, onChange }) => (
     <div className={s.prefGrid}>
-      {block.images.map((im) => (
-        <button key={im.id} type="button" className={s.pref} aria-pressed={value === im.id} onClick={() => onChange(im.id)}>
-          {im.src ? <img src={im.src} alt={im.caption || ''} /> : <div className={s.noImg}>Нет изображения</div>}
+      {block.images.map((im, i) => (
+        // вариант — SelectableCard baseui
+        <SelectableCard key={im.id} label={im.caption || `Вариант ${i + 1}`} padding={8} isSelected={value === im.id}
+          onChange={(sel) => { if (sel) onChange(im.id); }}>
+          {im.src ? <img src={im.src} alt="" className={s.prefImg} /> : <div className={s.noImg}>Нет изображения</div>}
           {im.caption && <div className={s.prefCap}>{im.caption}</div>}
-        </button>
+        </SelectableCard>
       ))}
     </div>
   ),

@@ -7,38 +7,47 @@
 | Слой | Технологии |
 |---|---|
 | Фронтенд | React 19 + TypeScript + Vite, React Router, CSS Modules |
-| UI | **Компоненты дизайн-системы [baseui](https://github.com/dalwoo-ru/baseui)** (Button, TextField, Checkbox/CheckboxGroup, RadioGroup, Switch, Modal, ChipGroup, Tag, List/ListItem, Avatar, Select) + токены `--baseui-*` + шрифт Geist, светлая/тёмная тема (`data-theme`) |
+| UI | **Дизайн-система [baseui](https://github.com/dalwoo-ru/baseui)**: Button, IconButton, TextField, NumberInput, Checkbox/CheckboxGroup, RadioGroup, Switch, Select, Modal, AlertDialog, Tabs, SegmentedControl, Card/SelectableCard, Table, List/ListItem, Badge, Avatar, Banner, ProgressBar, EmptyState, Breadcrumbs, Toast и др. + токены `--baseui-*` + шрифт Geist, светлая/тёмная тема (`data-theme`) |
 | Бэкенд | Node-обработчик `lib/handler.js` (без фреймворка), Postgres (`pg`) |
 | Деплой | Vercel: статика из `dist/`, API — функция `api/index.js` |
 
 ## Структура
 
 ```
-vendor/baseui/             скомпилированная дизайн-система baseui (tokens.css, fonts, lib/*) — не править руками
+vendor/baseui/             дизайн-система baseui (tokens.css, fonts, lib/*, src/*) — не править руками
 src/
   main.tsx, App.tsx        вход и маршруты
   api.ts, types.ts         клиент API и общие типы
-  styles/global.css        подключает токены и CSS компонентов baseui + базовые утилиты
-  ui/                      тонкий слой над baseui: baseui.generated.ts (реэкспорт компонентов), baseui-types.ts (типы пропсов),
-                           обёртки с удобным API (Button, TextField, Checkbox, Switch, Modal, Tabs…), Icon, ThemeToggle
+  styles/global.css        подключает токены и CSS baseui + базовые утилиты
+  ui/baseui.ts             компоненты baseui с типами (реэкспорт vendor/baseui/src/index.js)
+  ui/baseui-types.ts       типы пропсов компонентов (по описаниям props самого baseui)
+  ui/                      тонкие обёртки с удобным API (Button/LinkButton, TextField, Checkbox, Switch, Feedback), Icon, ThemeToggle
   blocks/                  блоки конструктора: по файлу на тип + registry.ts и контракт definition.ts
   pages/                   Auth, Dashboard, TestPage (конструктор/шеринг/результаты), Respondent
 api/index.js, lib/handler.js   бэкенд (Vercel-функция и локальный сервер)
-scripts/sync-baseui.mjs        синхронизация baseui → vendor/ + генерация реэкспорта и иконок
+scripts/sync-baseui.mjs        синхронизация baseui → vendor/ + генерация списка экспортов и иконок
 ```
 
 ### Как подключён baseui
 
-baseui поставляется скомпилированным (исходных `.tsx` нет), поэтому он лежит в `vendor/baseui` и подключается так же, как это делает его сайт документации: компонент берётся из `meta.component` story-модуля. В baseui зашит собственный чанк React, поэтому `vite.config.ts` подменяет его на npm-React приложения — иначе у приложения и компонентов были бы две копии React и сломались бы хуки. Иконки baseui выгружаются скриптом в статическую SVG-разметку (`src/ui/icons.generated.ts`).
+baseui — набор React-компонентов: часть написана модулями в `src/` (Button, Card, Tabs, Table, Toast…), часть — скомпилированная (`lib/`: TextField, Checkbox, Switch, Select, Modal, List…). Всё это лежит в `vendor/baseui` и импортируется через `src/ui/baseui.ts`.
+
+В baseui есть собственный чанк React, поэтому `vite.config.ts` содержит два плагина:
+
+- `baseuiSharedReact` — подменяет чанки React внутри baseui на npm-React приложения (иначе было бы две копии React и сломались бы хуки);
+- `baseuiStaticImports` — `src/base.js` подгружает скомпилированные компоненты через `import(`../lib/${file}`)`, что бандлер не разрешит; плагин заменяет это на `import.meta.glob`.
+
+Цели сборки — `es2022` (в baseui есть top-level await).
 
 Обновить дизайн-систему:
 
 ```bash
 git clone https://github.com/dalwoo-ru/baseui ../baseui      # или git pull
 npm run baseui                                                # BASEUI_DIR=/путь/к/baseui, если лежит не рядом
+npm run build                                                 # tsc покажет, что изменилось в API компонентов
 ```
 
-Какие компоненты и иконки подключены — список `COMPONENTS` и `ICONS` в `scripts/sync-baseui.mjs`. Типы пропсов новых компонентов нужно добавить в `src/ui/baseui-types.ts` (они берутся из `component.__docgenInfo`). Чего в baseui нет (карточки блоков, прогресс, тепловые таблицы, тост), собрано на токенах `--baseui-*` без собственных цветов.
+Новые токены называются `--baseui-spacing-N`, `--baseui-radius-N`, `--baseui-shadow-{low,med,high}`; props — `isDisabled`/`isLoading`, размеры `xsm · sm · md · lg · xl`. Если у компонента изменились props — поправьте типы в `src/ui/baseui-types.ts`. Чего в baseui нет (шапка, сайдбар, карточки блоков конструктора, тепловые таблицы результатов), собрано на токенах без собственных цветов.
 
 ### Как добавить блок
 

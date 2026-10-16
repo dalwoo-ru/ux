@@ -1,4 +1,4 @@
-import { ChipGroup } from '../ui/Controls';
+import { SegmentedControl } from '../ui/baseui';
 import { NumberField, TextField } from '../ui/Field';
 import type { BlockDef } from './definition';
 import { Bars, NoAnswers } from './shared';
@@ -23,9 +23,9 @@ export const scale: BlockDef<'scale'> = {
     const options = Array.from({ length: block.max - block.min + 1 }, (_, i) => ({ value: String(block.min + i), label: String(block.min + i) }));
     return (
       <div>
-        {/* шкала — ChipGroup baseui в режиме одиночного выбора */}
-        <ChipGroup options={options} variant="outlined" value={value === undefined ? [] : [String(value)]}
-          onValueChange={(v) => { const next = v.find((x) => x !== String(value)) ?? v[0]; if (next !== undefined) onChange(Number(next)); }} />
+        {/* шкала — SegmentedControl baseui */}
+        <SegmentedControl label={block.title} fullWidth items={options.map((o) => ({ value: o.value, label: o.label }))}
+          {...(value === undefined ? {} : { value: String(value) })} onValueChange={(v) => onChange(Number(v))} />
         <div className={s.scaleLabels}><span>{block.minLabel}</span><span>{block.maxLabel}</span></div>
       </div>
     );
@@ -35,7 +35,7 @@ export const scale: BlockDef<'scale'> = {
     const avg = (values.reduce((a, c) => a + c, 0) / values.length).toFixed(2);
     const rows: Array<[string, number]> = [];
     for (let i = block.min; i <= block.max; i++) rows.push([String(i), values.filter((v) => v === i).length]);
-    return <div><p style={{ marginBottom: 'var(--baseui-Space-S)' }}>Среднее: <b>{avg}</b></p><Bars rows={rows} total={values.length} /></div>;
+    return <div><p style={{ marginBottom: 'var(--baseui-spacing-12)' }}>Среднее: <b>{avg}</b></p><Bars rows={rows} total={values.length} /></div>;
   },
   answered: (_, v) => typeof v === 'number',
   exportValue: (_, v) => String(v),

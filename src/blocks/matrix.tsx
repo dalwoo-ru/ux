@@ -1,4 +1,4 @@
-import { Checkbox as BaseuiCheckbox, RadioGroup } from '../ui/baseui.generated';
+import { Checkbox as DsCheckbox, RadioGroup } from '../ui/baseui';
 import { Checkbox } from '../ui/Controls';
 import type { BlockDef } from './definition';
 import { textOf } from './definition';
@@ -34,7 +34,7 @@ export const matrix: BlockDef<'matrix'> = {
                   return (
                     <td key={c.id}>
                       {block.multiple
-                        ? <BaseuiCheckbox aria-label={`${r.text}: ${c.text}`} checked={cur.includes(c.id)}
+                        ? <DsCheckbox aria-label={`${r.text}: ${c.text}`} checked={cur.includes(c.id)}
                             onCheckedChange={(on) => onChange({ ...ans, [r.id]: on ? [...cur, c.id] : cur.filter((x) => x !== c.id) })} />
                         // у Radio baseui нет собственного checked — отмеченность задаёт группа; одна ячейка = группа из одной опции
                         : <RadioGroup options={[{ value: c.id, label: '' }]} value={cur[0] === c.id ? c.id : null}

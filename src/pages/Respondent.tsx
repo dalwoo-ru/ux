@@ -5,8 +5,11 @@ import { defOf } from '../blocks/registry';
 import { Button } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { useUi } from '../ui/Feedback';
+import { Banner, Card, ProgressBar, Spinner } from '../ui/baseui';
 import type { Answers, Block } from '../types';
 import s from './pages.module.css';
+
+const CARD = { variant: 'transparent', padding: 32, elevation: 'low', maxWidth: 700, width: '100%', className: s.surface } as const;
 
 export function Respondent() {
   const { token = '' } = useParams();
@@ -28,12 +31,12 @@ export function Respondent() {
 
   if (failure) {
     return (
-      <div className={s.respWrap}><div className={s.respCard}>
-        <h2>{failure.status === 404 ? 'Тест не найден' : 'Тест недоступен'}</h2><p className="muted">{failure.message}</p>
-      </div></div>
+      <div className={s.respWrap}><Card {...CARD}>
+        <h2 className={s.h2}>{failure.status === 404 ? 'Тест не найден' : 'Тест недоступен'}</h2><p className="muted">{failure.message}</p>
+      </Card></div>
     );
   }
-  if (!test) return null;
+  if (!test) return <div className={s.respWrap}><Spinner label="Загрузка теста" /></div>;
   const blocks = test.blocks;
 
   const persist = async (completed: boolean, data: Answers) => {
@@ -46,17 +49,17 @@ export function Respondent() {
     try { await fn(); } catch (e) { toast((e as Error).message); } finally { setBusy(false); }
   };
 
-  const bar = preview && <div className={s.previewBar}>Режим предпросмотра — ответы не сохраняются</div>;
+  const bar = preview && (
+    <div className={s.previewBar}><Banner status="warning">Режим предпросмотра — ответы не сохраняются</Banner></div>
+  );
 
   if (finished) {
     return (
       <div className={s.respWrap}>{bar}
-        <div className={s.respCard} style={{ textAlign: 'center' }}>
-          <div style={{ display: 'grid', placeItems: 'center', width: 64, height: 64, borderRadius: '50%', background: 'var(--baseui-Extensions-Background-LightSuccess)', margin: '0 auto var(--baseui-Space-M)', color: 'var(--baseui-Extensions-Text-and-Icon-AlwaysDark)' }}>
-            <Icon name="Check" size={32} />
-          </div>
-          <h1>Спасибо!</h1><p className="muted" style={{ marginTop: 8 }}>Ваши ответы сохранены. Можно закрыть страницу.</p>
-        </div>
+        <Card {...CARD} className={`${s.surface} ${s.center}`}>
+          <div className={s.doneIcon}><Icon name="Check" size={32} /></div>
+          <h1 className={s.h1}>Спасибо!</h1><p className="muted" style={{ marginTop: 8 }}>Ваши ответы сохранены. Можно закрыть страницу.</p>
+        </Card>
       </div>
     );
   }
@@ -64,11 +67,11 @@ export function Respondent() {
   if (step === -1) {
     return (
       <div className={s.respWrap}>{bar}
-        <div className={s.respCard}>
-          <h1>{test.title}</h1>
+        <Card {...CARD}>
+          <h1 className={s.h1}>{test.title}</h1>
           <p className={s.desc}>{blocks.length ? `Вопросов: ${blocks.length}. Это займёт пару минут.` : 'В этом тесте пока нет блоков.'}</p>
-          {blocks.length > 0 && <Button variant="primary" size="medium" loading={busy} onClick={() => guard(async () => { await persist(false, answers); setStep(0); })}>Начать</Button>}
-        </div>
+          {blocks.length > 0 && <Button variant="primary" size="md" isLoading={busy} onClick={() => guard(async () => { await persist(false, answers); setStep(0); })}>Начать</Button>}
+        </Card>
       </div>
     );
   }
@@ -89,17 +92,17 @@ export function Respondent() {
 
   return (
     <div className={s.respWrap}>{bar}
-      <div className={s.progress} role="progressbar" aria-valuenow={step} aria-valuemax={blocks.length}><div style={{ width: `${(step / blocks.length) * 100}%` }} /></div>
-      <div className={s.respCard}>
-        {!def.hideTitle && <h2>{b.title}</h2>}
+      <div className={s.progress}><ProgressBar size="sm" value={(step / blocks.length) * 100} aria-label={`Блок ${step + 1} из ${blocks.length}`} /></div>
+      <Card {...CARD}>
+        {!def.hideTitle && <h2 className={s.h2}>{b.title}</h2>}
         {b.description && <p className={s.desc}>{b.description}</p>}
         <def.Respond key={b.id} block={b} value={value} onChange={(v: unknown) => { setError(''); setAnswers((a) => ({ ...a, [b.id]: v })); }} />
         {error && <div className="error" role="alert">{error}</div>}
         <div className={s.respActions}>
-          <Button variant="secondary" size="medium" disabled={step === 0 || busy} startIcon={<Icon name="ArrowLeft" size={20} />} onClick={() => { setError(''); setStep(step - 1); }}>Назад</Button>
-          <Button variant="primary" size="medium" loading={busy} onClick={next}>{last ? 'Завершить' : 'Далее'}</Button>
+          <Button size="md" isDisabled={step === 0 || busy} icon={<Icon name="ArrowLeft" size={20} />} onClick={() => { setError(''); setStep(step - 1); }}>Назад</Button>
+          <Button variant="primary" size="md" isLoading={busy} onClick={next}>{last ? 'Завершить' : 'Далее'}</Button>
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

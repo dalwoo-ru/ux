@@ -1,4 +1,4 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-DeHZSEgm.js";import{n,t as r}from"./Switch-C2ggHNbo.js";var i,a,o,s,c,l,u;function d(){return(d=e((()=>{n(),i=t(),a={title:`Components/Switch`,component:r,parameters:{docs:{description:{component:"Свитч поверх headless Base UI Switch: мгновенное вкл/выкл независимой настройки. Размеры medium/large, состояния checked/disabled, ошибка — текст под полем (`error`). Стили — на токенах `--baseui-*`, инвертируются по теме (`data-theme`). Группы нет намеренно: несколько свитчей — независимые boolean-поля (для выбора N из M — `CheckboxGroup`). Для форм — `SwitchField` из `@baseui/ui/rhf/Switch`."}}},args:{label:`Label`,size:`medium`,defaultChecked:!1,disabled:!1,error:``},argTypes:{label:{control:`text`,description:`Текст лейбла справа`},size:{control:`inline-radio`,options:[`medium`,`large`],description:`Размер`},defaultChecked:{control:`boolean`,description:`Начальное значение (неконтролируемый)`},disabled:{control:`boolean`,description:`Отключён`},error:{control:`text`,description:`Текст ошибки под полем`}}},o={},s={parameters:{controls:{disable:!0}},render:()=>(0,i.jsxs)(`div`,{style:{display:`flex`,flexDirection:`column`,gap:`var(--baseui-Space-M)`},children:[(0,i.jsxs)(`div`,{style:{display:`flex`,gap:`var(--baseui-Space-M)`,alignItems:`center`},children:[(0,i.jsx)(r,{"aria-label":`unchecked`}),(0,i.jsx)(r,{"aria-label":`checked`,defaultChecked:!0}),(0,i.jsx)(r,{"aria-label":`disabled`,disabled:!0}),(0,i.jsx)(r,{"aria-label":`disabled-checked`,disabled:!0,defaultChecked:!0})]}),(0,i.jsxs)(`div`,{style:{display:`flex`,gap:`var(--baseui-Space-M)`,alignItems:`center`},children:[(0,i.jsx)(r,{size:`large`,"aria-label":`unchecked large`}),(0,i.jsx)(r,{size:`large`,"aria-label":`checked large`,defaultChecked:!0}),(0,i.jsx)(r,{size:`large`,"aria-label":`disabled large`,disabled:!0}),(0,i.jsx)(r,{size:`large`,"aria-label":`disabled-checked large`,disabled:!0,defaultChecked:!0})]})]})},c={parameters:{controls:{disable:!0}},render:()=>(0,i.jsxs)(`div`,{style:{display:`flex`,flexDirection:`column`,gap:`var(--baseui-Space-S)`},children:[(0,i.jsx)(r,{label:`Medium-лейбл (Text-16)`,defaultChecked:!0}),(0,i.jsx)(r,{size:`large`,label:`Large-лейбл (Text-20)`,defaultChecked:!0})]})},l={parameters:{controls:{disable:!0}},render:()=>(0,i.jsx)(r,{label:`Принять условия`,error:`Обязательное поле`})},o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{}`,...o.parameters?.docs?.source},description:{story:`Интерактивная песочница.`,...o.parameters?.docs?.description}}},s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-DeHZSEgm.js";import{n,t as r}from"./Switch-C2ggHNbo.js";var i,a,o,s,c,l,u;function d(){return(d=e((()=>{n(),i=t(),a={title:`Components/Switch`,component:r,parameters:{docs:{description:{component:"A switch on top of the headless Base UI Switch: an instant on/off of an independent setting. Sizes medium/large, checked/disabled states, the error is text under the field (`error`). Styles use `--baseui-*` tokens, inverted by theme (`data-theme`). There is no group on purpose: several switches are independent boolean fields (for choosing N of M use `CheckboxGroup`). For forms use `SwitchField` from `@baseui/ui/rhf/Switch`."}}},args:{label:`Label`,size:`md`,defaultChecked:!1,disabled:!1,error:``},argTypes:{label:{control:`text`,description:`Label text on the right`},size:{control:`inline-radio`,options:[`sm`,`md`,`lg`],description:`Size`},defaultChecked:{control:`boolean`,description:`Initial value (uncontrolled)`},disabled:{control:`boolean`,description:`Disabled`},error:{control:`text`,description:`Error text under the field`}}},o={},s={parameters:{controls:{disable:!0}},render:()=>(0,i.jsxs)(`div`,{style:{display:`flex`,flexDirection:`column`,gap:`var(--baseui-spacing-16)`},children:[(0,i.jsxs)(`div`,{style:{display:`flex`,gap:`var(--baseui-spacing-16)`,alignItems:`center`},children:[(0,i.jsx)(r,{"aria-label":`unchecked`}),(0,i.jsx)(r,{"aria-label":`checked`,defaultChecked:!0}),(0,i.jsx)(r,{"aria-label":`disabled`,disabled:!0}),(0,i.jsx)(r,{"aria-label":`disabled-checked`,disabled:!0,defaultChecked:!0})]}),(0,i.jsxs)(`div`,{style:{display:`flex`,gap:`var(--baseui-spacing-16)`,alignItems:`center`},children:[(0,i.jsx)(r,{size:`lg`,"aria-label":`unchecked large`}),(0,i.jsx)(r,{size:`lg`,"aria-label":`checked large`,defaultChecked:!0}),(0,i.jsx)(r,{size:`lg`,"aria-label":`disabled large`,disabled:!0}),(0,i.jsx)(r,{size:`lg`,"aria-label":`disabled-checked large`,disabled:!0,defaultChecked:!0}),(0,i.jsx)(r,{size:`sm`,"aria-label":`small`}),(0,i.jsx)(r,{size:`sm`,"aria-label":`small checked`,defaultChecked:!0}),(0,i.jsx)(r,{size:`sm`,"aria-label":`small disabled`,disabled:!0})]})]})},c={parameters:{controls:{disable:!0}},render:()=>(0,i.jsxs)(`div`,{style:{display:`flex`,flexDirection:`column`,gap:`var(--baseui-spacing-12)`},children:[(0,i.jsx)(r,{label:`Medium label (Text-16)`,defaultChecked:!0}),(0,i.jsx)(r,{size:`lg`,label:`Large label (Text-20)`,defaultChecked:!0}),(0,i.jsx)(r,{size:`sm`,label:`Small label (Text-14)`,defaultChecked:!0})]})},l={parameters:{controls:{disable:!0}},render:()=>(0,i.jsx)(r,{label:`Accept the terms`,error:`Required field`})},o.parameters={...o.parameters,docs:{...o.parameters?.docs,source:{originalSource:`{}`,...o.parameters?.docs?.source},description:{story:`Interactive playground.`,...o.parameters?.docs?.description}}},s.parameters={...s.parameters,docs:{...s.parameters?.docs,source:{originalSource:`{
   parameters: {
     controls: {
       disable: true
@@ -7,11 +7,11 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-D
   render: () => <div style={{
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--baseui-Space-M)'
+    gap: 'var(--baseui-spacing-16)'
   }}>
       <div style={{
       display: 'flex',
-      gap: 'var(--baseui-Space-M)',
+      gap: 'var(--baseui-spacing-16)',
       alignItems: 'center'
     }}>
         <Switch aria-label="unchecked" />
@@ -21,16 +21,16 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-D
       </div>
       <div style={{
       display: 'flex',
-      gap: 'var(--baseui-Space-M)',
+      gap: 'var(--baseui-spacing-16)',
       alignItems: 'center'
     }}>
-        <Switch size="large" aria-label="unchecked large" />
-        <Switch size="large" aria-label="checked large" defaultChecked />
-        <Switch size="large" aria-label="disabled large" disabled />
-        <Switch size="large" aria-label="disabled-checked large" disabled defaultChecked />
+        <Switch size="lg" aria-label="unchecked large" />
+        <Switch size="lg" aria-label="checked large" defaultChecked />
+        <Switch size="lg" aria-label="disabled large" disabled />
+        <Switch size="lg" aria-label="disabled-checked large" disabled defaultChecked />
       </div>
     </div>
-}`,...s.parameters?.docs?.source},description:{story:`Состояния обоих размеров: unchecked · checked · disabled · disabled-checked.`,...s.parameters?.docs?.description}}},c.parameters={...c.parameters,docs:{...c.parameters?.docs,source:{originalSource:`{
+}`,...s.parameters?.docs?.source},description:{story:`States of both sizes: unchecked · checked · disabled · disabled-checked.`,...s.parameters?.docs?.description}}},c.parameters={...c.parameters,docs:{...c.parameters?.docs,source:{originalSource:`{
   parameters: {
     controls: {
       disable: true
@@ -39,16 +39,16 @@ import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-D
   render: () => <div style={{
     display: 'flex',
     flexDirection: 'column',
-    gap: 'var(--baseui-Space-S)'
+    gap: 'var(--baseui-spacing-12)'
   }}>
-      <Switch label="Medium-лейбл (Text-16)" defaultChecked />
-      <Switch size="large" label="Large-лейбл (Text-20)" defaultChecked />
+      <Switch label="Medium label (Text-16)" defaultChecked />
+      <Switch size="lg" label="Large label (Text-20)" defaultChecked />
     </div>
-}`,...c.parameters?.docs?.source},description:{story:`С лейблом обоих размеров.`,...c.parameters?.docs?.description}}},l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`{
+}`,...c.parameters?.docs?.source},description:{story:`With a label, both sizes.`,...c.parameters?.docs?.description}}},l.parameters={...l.parameters,docs:{...l.parameters?.docs,source:{originalSource:`{
   parameters: {
     controls: {
       disable: true
     }
   },
-  render: () => <Switch label="Принять условия" error="Обязательное поле" />
-}`,...l.parameters?.docs?.source},description:{story:"Ошибка без RHF: текст под полем через проп `error`.",...l.parameters?.docs?.description}}},u=[`Playground`,`States`,`WithLabel`,`WithError`]})))()}d();export{o as Playground,s as States,l as WithError,c as WithLabel,u as __namedExportsOrder,a as default};
+  render: () => <Switch label="Accept the terms" error="Required field" />
+}`,...l.parameters?.docs?.source},description:{story:"Error without RHF: text under the field through the `error` prop.",...l.parameters?.docs?.description}}},u=[`Playground`,`States`,`WithLabel`,`WithError`]})))()}d();export{o as Playground,s as States,l as WithError,c as WithLabel,u as __namedExportsOrder,a as default};

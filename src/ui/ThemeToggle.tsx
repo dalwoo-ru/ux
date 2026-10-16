@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button } from './Button';
+import { IconButton } from './baseui';
 import { Icon } from './Icon';
 
 type Theme = 'light' | 'dark';
@@ -10,15 +10,13 @@ export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(current);
   useEffect(() => { document.documentElement.dataset.theme = theme; }, [theme]);
   return (
-    <div style={{ position: 'fixed', right: 16, bottom: 16, zIndex: 900, boxShadow: 'var(--baseui-Shadow-S)', borderRadius: 'var(--baseui-Radius-S)' }}>
-      <Button variant="secondary" size="small" aria-label="Сменить тему" title="Сменить тему"
+    <div style={{ position: 'fixed', left: 16, bottom: 16, zIndex: 'var(--baseui-z-index-200)' as unknown as number, boxShadow: 'var(--baseui-shadow-low)', borderRadius: 'var(--baseui-radius-12)' }}>
+      <IconButton label="Сменить тему" icon={<Icon name={theme === 'dark' ? 'Sun' : 'Moon01'} size={24} />}
         onClick={() => {
           const next = theme === 'dark' ? 'light' : 'dark';
           try { localStorage.setItem('theme', next); } catch { /* storage unavailable */ }
           setTheme(next);
-        }}>
-        <Icon name={theme === 'dark' ? 'Sun' : 'Moon01'} />
-      </Button>
+        }} />
     </div>
   );
 }

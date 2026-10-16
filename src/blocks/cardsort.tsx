@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '../ui/Button';
 import { Checkbox } from '../ui/Controls';
-import { Chip } from '../ui/baseui.generated';
+import { Card, Chip } from '../ui/baseui';
 import { TextField } from '../ui/Field';
 import { cx } from '../ui/cx';
 import type { BlockDef } from './definition';
@@ -30,16 +30,16 @@ function CardSortRespond({ block, value, onChange }: { block: CardSortBlock; val
     <div key={id} className={s.chipWrap} draggable
       onDragStart={(e) => { e.dataTransfer.setData('text/plain', id); setSelected(id); }}
       onClick={(e) => e.stopPropagation()}>
-      <Chip variant="outlined" size="small" pressed={selected === id} onPressedChange={(on) => setSelected(on ? id : null)}>{text || '—'}</Chip>
+      <Chip size="sm" pressed={selected === id} onPressedChange={(on) => setSelected(on ? id : null)}>{text || '—'}</Chip>
     </div>
   );
   const zone = (title: string | null, cat: string | null, content: React.ReactNode) => (
-    <div className={cx(s.zone, selected && cat !== null && s.zoneTarget)} key={cat ?? '__pool'}
+    <Card variant="muted" padding={12} className={cx(s.zone, selected && cat !== null && s.zoneTarget)} key={cat ?? '__pool'}
       onClick={() => { if (selected) place(selected, cat); }}
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => { e.preventDefault(); const id = e.dataTransfer.getData('text/plain'); if (id) place(id, cat); }}>
       {title && <h4>{title}</h4>}{content}
-    </div>
+    </Card>
   );
   const addCat = () => {
     const n = draft.trim();
@@ -55,8 +55,8 @@ function CardSortRespond({ block, value, onChange }: { block: CardSortBlock; val
         {cats.map((cat) => zone(cat, cat, block.cards.filter((c) => ans[c.id] === cat).map((c) => chip(c.id, c.text))))}
         {block.open && (
           <form className="row" onSubmit={(e) => { e.preventDefault(); addCat(); }}>
-            <div className="grow"><TextField label="Название новой категории" size="small" value={draft} onChange={setDraft} /></div>
-            <Button type="submit" variant="secondary" size="small">Добавить</Button>
+            <div className="grow"><TextField label="Название новой категории" size="sm" value={draft} onChange={setDraft} /></div>
+            <Button type="submit" size="sm">Добавить</Button>
           </form>
         )}
       </div>

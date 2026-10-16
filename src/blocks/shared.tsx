@@ -3,6 +3,7 @@ import { Button, IconButton } from '../ui/Button';
 import { Icon } from '../ui/Icon';
 import { TextField } from '../ui/Field';
 import { useUi } from '../ui/Feedback';
+import { ProgressBar } from '../ui/baseui';
 import { readImage, pct, uid } from '../lib/util';
 import type { Img, Item } from '../types';
 import s from './blocks.module.css';
@@ -17,20 +18,19 @@ export function ListEditor({ label, items, onChange, addLabel, min = 1, placehol
   return (
     <div className={s.group}>
       <FieldLabel>{label}</FieldLabel>
-      <div className="stack" style={{ gap: 'var(--baseui-Space-XS)', marginBottom: 'var(--baseui-Space-XS)' }}>
+      <div className="stack" style={{ gap: 'var(--baseui-spacing-8)', marginBottom: 'var(--baseui-spacing-8)' }}>
         {items.map((it, i) => (
           <div className="row" key={it.id}>
             <div className="grow">
-              <TextField label={`${placeholder} ${i + 1}`} value={it.text} size="small"
+              <TextField label={`${placeholder} ${i + 1}`} value={it.text} size="sm"
                 onChange={(text) => onChange(items.map((x) => (x.id === it.id ? { ...x, text } : x)))} />
             </div>
-            <IconButton label="Удалить" disabled={items.length <= min} onClick={() => onChange(items.filter((_, j) => j !== i))}>
-              <Icon name="XClose" size={20} />
-            </IconButton>
+            <IconButton label="Удалить" variant="ghost" size="xsm" isDisabled={items.length <= min}
+              icon={<Icon name="XClose" size={20} />} onClick={() => onChange(items.filter((_, j) => j !== i))} />
           </div>
         ))}
       </div>
-      <Button variant="secondary" size="xsmall" startIcon={<Icon name="Plus" size={16} />} onClick={() => onChange([...items, { id: uid(), text: '' }])}>{addLabel}</Button>
+      <Button size="xsm" icon={<Icon name="Plus" size={16} />} onClick={() => onChange([...items, { id: uid(), text: '' }])}>{addLabel}</Button>
     </div>
   );
 }
@@ -43,18 +43,18 @@ export function ImageEditor({ img, onChange, withCaption, onRemove }:
   return (
     <div className={s.imgEdit}>
       {img.src ? <img src={img.src} alt="" /> : <div className={s.imgPlaceholder}><Icon name="Image01" /></div>}
-      <div className="grow stack" style={{ gap: 'var(--baseui-Space-XS)' }}>
-        <TextField label="Ссылка на изображение" size="small" value={img.src.startsWith('data:') ? '' : img.src} onChange={(src) => onChange({ src: src.trim() })} />
-        {withCaption && <TextField label="Подпись (необязательно)" size="small" value={img.caption || ''} onChange={(caption) => onChange({ caption })} />}
+      <div className="grow stack" style={{ gap: 'var(--baseui-spacing-8)' }}>
+        <TextField label="Ссылка на изображение" size="sm" value={img.src.startsWith('data:') ? '' : img.src} onChange={(src) => onChange({ src: src.trim() })} />
+        {withCaption && <TextField label="Подпись (необязательно)" size="sm" value={img.caption || ''} onChange={(caption) => onChange({ caption })} />}
         <div className="row">
-          <Button variant="secondary" size="xsmall" startIcon={<Icon name="Image01" size={16} />} onClick={() => file.current?.click()}>Загрузить файл</Button>
+          <Button size="xsm" icon={<Icon name="Image01" size={16} />} onClick={() => file.current?.click()}>Загрузить файл</Button>
           <input ref={file} type="file" accept="image/*" hidden onChange={async (e) => {
             const f = e.target.files?.[0];
             e.target.value = '';
             if (!f) return;
             try { onChange({ src: await readImage(f) }); } catch (err) { toast((err as Error).message); }
           }} />
-          {onRemove && <Button variant="text" size="xsmall" onClick={onRemove} startIcon={<Icon name="Trash01" size={16} />}>Удалить</Button>}
+          {onRemove && <Button variant="ghost" size="xsm" icon={<Icon name="Trash01" size={16} />} onClick={onRemove}>Удалить</Button>}
         </div>
       </div>
     </div>
@@ -63,13 +63,14 @@ export function ImageEditor({ img, onChange, withCaption, onRemove }:
 
 export const NoAnswers = () => <p className="muted">Пока нет ответов</p>;
 
+/** Строки «ответ — доля»: ProgressBar baseui + счётчик. */
 export function Bars({ rows, total }: { rows: Array<[ReactNode, number]>; total: number }) {
   return (
     <div>
       {rows.map(([label, n], i) => (
         <div className={s.barRow} key={i}>
           <div>{label}</div>
-          <div className={s.bar}><div style={{ width: `${pct(n, total)}%` }} /></div>
+          <ProgressBar size="sm" value={pct(n, total)} aria-label={typeof label === 'string' ? label : undefined} />
           <div className="muted">{n} · {pct(n, total)}%</div>
         </div>
       ))}

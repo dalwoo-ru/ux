@@ -27,7 +27,7 @@ function FiveSecRespond({ block, value, onChange }: { block: FiveSecBlock; value
     return (
       <div className={s.stage}>
         <p className="muted">Изображение будет показано {block.seconds} сек.</p>
-        <Button onClick={() => setStage('show')}>Начать</Button>
+        <Button variant="primary" onClick={() => setStage('show')}>Начать</Button>
       </div>
     );
   }
@@ -41,7 +41,7 @@ function FiveSecRespond({ block, value, onChange }: { block: FiveSecBlock; value
   }
   return (
     <div>
-      <h2 style={{ font: 'var(--baseui-Typography-Text-20-Semi-Bold)', marginBottom: 'var(--baseui-Space-S)' }}>{block.title}</h2>
+      <h2 style={{ font: 'var(--baseui-Typography-Text-20-Semi-Bold)', marginBottom: 'var(--baseui-spacing-12)' }}>{block.title}</h2>
       <TextField label="Ваш ответ" multiline minRows={4} value={value ?? ''} onChange={onChange} autoFocus />
     </div>
   );

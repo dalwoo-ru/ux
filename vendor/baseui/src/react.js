@@ -1,0 +1,26 @@
+// Single access point for React and shared helpers of baseui components.
+import { t as requireReact } from '../lib/react-BZJXY1be.js';
+
+export const React = requireReact();
+export const h = React.createElement;
+export const {
+  Fragment, createContext, useCallback, useContext, useEffect, useId, useMemo, useRef, useState,
+} = React;
+
+/** Join class names: cx('a', cond && 'b') */
+export const cx = (...parts) => parts.filter(Boolean).join(' ');
+
+/**
+ * Controlled / uncontrolled state: value + defaultValue + onChange.
+ * Convention for all baseui components: `value`, `defaultValue`, `onValueChange`.
+ */
+export function useControllable(value, defaultValue, onChange) {
+  const [inner, setInner] = useState(defaultValue);
+  const controlled = value !== undefined;
+  const current = controlled ? value : inner;
+  const set = useCallback((next) => {
+    if (!controlled) setInner(next);
+    if (onChange) onChange(next);
+  }, [controlled, onChange]);
+  return [current, set];
+}

@@ -4,9 +4,9 @@ import { api } from '../api';
 import { waitForSaves } from '../lib/save';
 import { fmtDate } from '../lib/util';
 import { Button, IconButton } from '../ui/Button';
-import { useUi, Modal } from '../ui/Feedback';
+import { useUi } from '../ui/Feedback';
 import { Icon } from '../ui/Icon';
-import { List, ListItem, Select, Tag } from '../ui/baseui.generated';
+import { Badge, Card, EmptyState, List, ListItem, Modal, Select, Skeleton } from '../ui/baseui';
 import type { Folder, TestSummary } from '../types';
 import { Topbar } from './Layout';
 import s from './pages.module.css';
@@ -67,62 +67,63 @@ export function Dashboard() {
                 details={countIn(f.id)}
                 control={(
                   <span className="row" style={{ gap: 0 }}>
-                    <IconButton label="Переименовать папку" onClick={async () => {
+                    <IconButton label="Переименовать папку" variant="ghost" size="xsm" icon={<Icon name="Edit01" size={18} />} onClick={async () => {
                       const name = await prompt('Новое название', f.name);
                       if (name) { await api.renameFolder(f.id, name); await load(); }
-                    }}><Icon name="Edit01" size={18} /></IconButton>
-                    <IconButton label="Удалить папку" onClick={async () => {
+                    }} />
+                    <IconButton label="Удалить папку" variant="ghost" size="xsm" icon={<Icon name="Trash01" size={18} />} onClick={async () => {
                       if (await confirm(`Удалить папку «${f.name}»? Тесты внутри останутся в разделе «Все тесты».`)) {
                         await api.deleteFolder(f.id);
                         if (folderId === f.id) nav('/'); else await load();
                       }
-                    }}><Icon name="Trash01" size={18} /></IconButton>
+                    }} />
                   </span>
                 )}>{f.name}</ListItem>
             ))}
           </List>
           <div className={s.sideAction}>
-            <Button variant="secondary" size="small" fullWidth startIcon={<Icon name="FolderPlus" size={20} />} onClick={createFolder}>Новая папка</Button>
+            <Button size="sm" width="100%" icon={<Icon name="FolderPlus" size={20} />} onClick={createFolder}>Новая папка</Button>
           </div>
         </aside>
 
         <main className={s.main}>
           <div className={s.pageHead}>
             <h2>{folder ? folder.name : 'Все тесты'}</h2>
-            <Button variant="primary" size="small" startIcon={<Icon name="Plus" size={20} />} onClick={createTest}>Создать тест</Button>
+            <Button variant="primary" size="sm" icon={<Icon name="Plus" size={20} />} onClick={createTest}>Создать тест</Button>
           </div>
-          {tests === null ? null : list.length ? (
-            <div className={s.panel}>
+          {tests === null ? <Skeleton variant="rect" height={72} /> : list.length ? (
+            <Card padding={8}>
               <List>
                 {list.map((t) => (
                   <ListItem key={t.id} icon={<Icon name="CheckSquare" size={24} />} onClick={() => nav(`/tests/${t.id}`)}
                     subtitle={`Прохождений: ${t.responses_count} · ${fmtDate(t.updated_at)}${folderId === null && t.folder_id ? ` · ${folders.find((f) => f.id === t.folder_id)?.name ?? ''}` : ''}`}
-                    details={<Tag variant="filled" color={t.published ? 'brand' : 'secondary'} size="small">{t.published ? 'Опубликован' : 'Черновик'}</Tag>}
+                    details={<Badge variant={t.published ? 'success' : 'neutral'} label={t.published ? 'Опубликован' : 'Черновик'} />}
                     control={(
                       <span className="row" style={{ gap: 0 }}>
-                        <IconButton label="Переместить в папку" onClick={() => openMove(t)}><Icon name="Folder" size={18} /></IconButton>
-                        <IconButton label="Сделать копию" onClick={async () => { const r = await api.duplicateTest(t.id); toast('Копия создана'); nav(`/tests/${r.id}`); }}><Icon name="Copy01" size={18} /></IconButton>
-                        <IconButton label="Удалить тест" onClick={async () => {
+                        <IconButton label="Переместить в папку" variant="ghost" size="xsm" icon={<Icon name="Folder" size={18} />} onClick={() => openMove(t)} />
+                        <IconButton label="Сделать копию" variant="ghost" size="xsm" icon={<Icon name="Copy01" size={18} />} onClick={async () => { const r = await api.duplicateTest(t.id); toast('Копия создана'); nav(`/tests/${r.id}`); }} />
+                        <IconButton label="Удалить тест" variant="ghost" size="xsm" icon={<Icon name="Trash01" size={18} />} onClick={async () => {
                           if (await confirm(`Удалить тест «${t.title}» вместе со всеми результатами?`)) { await api.deleteTest(t.id); await load(); }
-                        }}><Icon name="Trash01" size={18} /></IconButton>
+                        }} />
                       </span>
                     )}>{t.title}</ListItem>
                 ))}
               </List>
-            </div>
+            </Card>
           ) : (
-            <div className={s.empty}><p>Здесь пока нет тестов</p><Button variant="primary" size="small" onClick={createTest}>Создать первый тест</Button></div>
+            <EmptyState icon={<Icon name="ClipboardCheck" size={40} />} title="Здесь пока нет тестов" description="Создайте тест, добавьте блоки и поделитесь ссылкой с респондентами"
+              action={<Button variant="primary" onClick={createTest}>Создать первый тест</Button>} />
           )}
         </main>
       </div>
 
       {moving && (
-        <Modal open onClose={() => setMoving(null)} title="Переместить в папку" subtitle={moving.title}
-          primary={<Button onClick={async () => {
+        <Modal open onOpenChange={(o) => { if (!o) setMoving(null); }} title="Переместить в папку" subtitle={moving.title}
+          primaryAction={<Button variant="primary" onClick={async () => {
             await api.updateTest(moving.id, { folder_id: target === NO_FOLDER ? null : Number(target) });
             setMoving(null); await load();
           }}>Переместить</Button>}
-          secondary={<Button variant="secondary" onClick={() => setMoving(null)}>Отмена</Button>}>
+          secondaryAction={<Button onClick={() => setMoving(null)}>Отмена</Button>}>
           <Select label="Папка" value={target} onValueChange={(v) => setTarget(v ?? NO_FOLDER)}
             options={[{ value: NO_FOLDER, label: 'Без папки' }, ...folders.map((f) => ({ value: String(f.id), label: f.name }))]} />
         </Modal>

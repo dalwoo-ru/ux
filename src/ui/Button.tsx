@@ -1,22 +1,22 @@
-import { Link, type LinkProps } from 'react-router-dom';
-import type { ComponentProps, ReactNode } from 'react';
-import { Button as BaseuiButton } from './baseui.generated';
+import { useNavigate, type To } from 'react-router-dom';
+import type { MouseEvent } from 'react';
+import { Button, IconButton } from './baseui';
+import type { ButtonProps } from './baseui-types';
 
-/** Кнопка baseui (variant: primary | secondary | text; size: large | medium | small | xsmall). */
-export const Button = BaseuiButton;
-export type ButtonProps = ComponentProps<typeof BaseuiButton>;
+export { Button, IconButton };
 
-/** Иконочная кнопка: baseui Button variant="text" только с иконкой. Подпись — обязательно (aria-label). */
-export function IconButton({ label, children, ...props }: Omit<ButtonProps, 'children' | 'aria-label'> & { label: string; children: ReactNode }) {
-  return <BaseuiButton variant="text" size="xsmall" aria-label={label} title={label} {...props}>{children}</BaseuiButton>;
+/** Кнопка baseui как ссылка роутера: настоящий <a href>, переход без перезагрузки. */
+export function LinkButton({ to, ...props }: Omit<ButtonProps, 'href' | 'onClick'> & { to: To & string }) {
+  const nav = useNavigate();
+  const onClick = (e: MouseEvent<HTMLElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // «открыть в новой вкладке» работает как обычно
+    e.preventDefault();
+    nav(to);
+  };
+  return <Button {...props} href={to} onClick={onClick} />;
 }
 
-/** Кнопка baseui как ссылка роутера (Base UI `render`). */
-export function LinkButton({ to, ...props }: Omit<ButtonProps, 'render' | 'nativeButton'> & { to: LinkProps['to'] }) {
-  return <BaseuiButton {...props} nativeButton={false} render={<Link to={to} />} />;
-}
-
-/** Кнопка baseui как внешняя ссылка. */
-export function AnchorButton({ href, ...props }: Omit<ButtonProps, 'render' | 'nativeButton'> & { href: string }) {
-  return <BaseuiButton {...props} nativeButton={false} render={<a href={href} target="_blank" rel="noreferrer" />} />;
+/** Кнопка baseui как внешняя ссылка (новая вкладка). */
+export function AnchorButton(props: Omit<ButtonProps, 'target' | 'rel'> & { href: string }) {
+  return <Button {...props} target="_blank" rel="noreferrer" />;
 }
