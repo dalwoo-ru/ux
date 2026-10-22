@@ -12,9 +12,9 @@ import { getOwnedTest, listResponses } from "@/lib/data"
 export default async function TestPage({ params }: { params: Promise<{ id: string }> }) {
   const user = await requireUser()
   const { id } = await params
-  const test = getOwnedTest(user.id, id)
+  const test = await getOwnedTest(user.id, id)
   if (!test) notFound()
-  const responses = listResponses(id)
+  const responses = await listResponses(id)
 
   return (
     <>
