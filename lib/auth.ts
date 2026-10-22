@@ -24,7 +24,7 @@ export function verifyPassword(pw: string, stored: string) {
 export async function createSession(userId: string) {
   const token = randomBytes(32).toString("hex")
   const expires = Date.now() + TTL
-  await q("INSERT INTO sessions (token, user_id, expires_at) VALUES ($1, $2, $3)", [token, userId, expires])
+  await q("INSERT INTO ux_sessions (token, user_id, expires_at) VALUES ($1, $2, $3)", [token, userId, expires])
   ;(await cookies()).set(COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
@@ -37,7 +37,7 @@ export async function createSession(userId: string) {
 export async function destroySession() {
   const jar = await cookies()
   const token = jar.get(COOKIE)?.value
-  if (token) await q("DELETE FROM sessions WHERE token = $1", [token])
+  if (token) await q("DELETE FROM ux_sessions WHERE token = $1", [token])
   jar.delete(COOKIE)
 }
 
@@ -45,7 +45,7 @@ export async function getUser(): Promise<User | null> {
   const token = (await cookies()).get(COOKIE)?.value
   if (!token) return null
   const [row] = await q<User>(
-    "SELECT u.id, u.email, u.name FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = $1 AND s.expires_at > $2",
+    "SELECT u.id, u.email, u.name FROM ux_sessions s JOIN ux_users u ON u.id = s.user_id WHERE s.token = $1 AND s.expires_at > $2",
     [token, Date.now()]
   )
   return row ?? null
