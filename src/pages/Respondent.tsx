@@ -36,7 +36,7 @@ export function Respondent() {
       </Card></div>
     );
   }
-  if (!test) return <div className={s.respWrap}><Spinner label="Загрузка теста" /></div>;
+  if (!test) return <div className={s.respWrap}><Spinner /></div>;
   const blocks = test.blocks;
 
   const persist = async (completed: boolean, data: Answers) => {

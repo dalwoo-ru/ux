@@ -17,7 +17,6 @@
   /* Text and Icon */
   --baseui-Text-and-Icon-Primary: #171717;
   --baseui-Text-and-Icon-Secondary: #5f6877;
-  --baseui-Text-and-Icon-OnColor: #ffffff;
   --baseui-Text-and-Icon-Disabled: #babfca;
   --baseui-Text-and-Icon-Accent: #575df6;
 
@@ -49,6 +48,8 @@
   --baseui-Extensions-Text-and-Icon-Success: #44cf5e;
   --baseui-Extensions-Text-and-Icon-AlwaysDark: #171717;
   --baseui-Extensions-Text-and-Icon-AlwaysLight: #ffffff;
+  --baseui-Extensions-Text-and-Icon-OnColor: #ffffff;
+  --baseui-Extensions-Text-and-Icon-OnBrand: #ffffff;
 
   /* Extensions / Background */
   --baseui-Extensions-Background-Surface: #ffffff;
@@ -80,7 +81,7 @@
   --baseui-Background-Tertiary-Hover: #c8cfd9;
   --baseui-Background-Accent-Hover: #4b51ec;
   --baseui-Background-Brand-Hover: #3b3b3b;
-  --baseui-Background-Transparent-Hover: rgba(23, 23, 23, 0.06);
+  --baseui-Background-Transparent-Hover: rgba(88, 122, 172, 0.06);
   --baseui-Extensions-Background-Surface-Hover: #f5f7fa;
   --baseui-Extensions-Background-Error-Hover: #d9523b;
   --baseui-Extensions-Background-Warning-Hover: #e7a92c;
@@ -88,7 +89,8 @@
   --baseui-Extensions-Background-LightAccent-Hover: #dcdefd;
   --baseui-Text-and-Icon-Primary-Hover: #2c2c2c;
   --baseui-Text-and-Icon-Secondary-Hover: #464f5d;
-  --baseui-Text-and-Icon-OnColor-Hover: #e1e1e1;
+  --baseui-Extensions-Text-and-Icon-OnColor-Hover: #e1e1e1;
+  --baseui-Extensions-Text-and-Icon-OnBrand-Hover: #e1e1e1;
   --baseui-Text-and-Icon-Disabled-Hover: #9ea3ad;
   --baseui-Text-and-Icon-Accent-Hover: #423ed6;
   --baseui-Background-Disabled-Hover: #e3e3e3;
@@ -131,7 +133,6 @@
   /* Text and Icon */
   --baseui-Text-and-Icon-Primary: #ffffff;
   --baseui-Text-and-Icon-Secondary: #999999;
-  --baseui-Text-and-Icon-OnColor: #171717;
   --baseui-Text-and-Icon-Disabled: #7a7a7a;
   --baseui-Text-and-Icon-Accent: #575df6;
 
@@ -163,6 +164,8 @@
   --baseui-Extensions-Text-and-Icon-Success: #44cf5e;
   --baseui-Extensions-Text-and-Icon-AlwaysDark: #171717;
   --baseui-Extensions-Text-and-Icon-AlwaysLight: #ffffff;
+  --baseui-Extensions-Text-and-Icon-OnColor: #171717;
+  --baseui-Extensions-Text-and-Icon-OnBrand: #171717;
 
   /* Extensions / Background */
   --baseui-Extensions-Background-Surface: #222222;
@@ -177,7 +180,7 @@
   --baseui-Extensions-Background-LightSuccess: #114119;
   --baseui-Extensions-Background-LightAccent: #24276a;
   --baseui-Extensions-Background-LightError: #51150a;
-  --baseui-Extensions-Background-LightWarning: #eac57b;
+  --baseui-Extensions-Background-LightWarning: #503806;
 
   /* Extensions / Border */
   --baseui-Extensions-Border-Selected: #ffffff;
@@ -194,7 +197,7 @@
   --baseui-Background-Tertiary-Hover: #444444;
   --baseui-Background-Accent-Hover: #6a6ff8;
   --baseui-Background-Brand-Hover: #e0e0e0;
-  --baseui-Background-Transparent-Hover: rgba(255, 255, 255, 0.08);
+  --baseui-Background-Transparent-Hover: rgba(255, 255, 255, 0.05);
   --baseui-Extensions-Background-Surface-Hover: #2b2b2b;
   --baseui-Extensions-Background-Error-Hover: #ee7561;
   --baseui-Extensions-Background-Warning-Hover: #f8c866;
@@ -202,7 +205,8 @@
   --baseui-Extensions-Background-LightAccent-Hover: #2d3180;
   --baseui-Text-and-Icon-Primary-Hover: #e1e1e1;
   --baseui-Text-and-Icon-Secondary-Hover: #b5b5b5;
-  --baseui-Text-and-Icon-OnColor-Hover: #2c2c2c;
+  --baseui-Extensions-Text-and-Icon-OnColor-Hover: #2c2c2c;
+  --baseui-Extensions-Text-and-Icon-OnBrand-Hover: #2c2c2c;
   --baseui-Text-and-Icon-Disabled-Hover: #959595;
   --baseui-Text-and-Icon-Accent-Hover: #7383fc;
   --baseui-Background-Disabled-Hover: #555555;
@@ -228,7 +232,7 @@
   --baseui-Extensions-Background-AlwaysLight-Hover: #f2f2f2;
   --baseui-Extensions-Background-LightSuccess-Hover: #235129;
   --baseui-Extensions-Background-LightError-Hover: #63261a;
-  --baseui-Extensions-Background-LightWarning-Hover: #d6b268;
+  --baseui-Extensions-Background-LightWarning-Hover: #634508;
   --baseui-Extensions-Border-Selected-Hover: #e8e8e8;
   --baseui-Extensions-Border-SelectedAlwaysDark-Hover: #272727;
   --baseui-Extensions-Border-SelectedAlwaysLight-Hover: #e8e8e8;
@@ -253,6 +257,26 @@
   --baseui-spacing-48: 48px;
   --baseui-spacing-64: 64px;
   --baseui-spacing-80: 80px;
+}
+
+/* ---------- Layout ---------- */
+/* Page and container geometry. Media queries cannot read variables, so the breakpoints are mirrored in CSS. */
+:root {
+  /* Margins */
+  --baseui-layout-margin-mobile: 20px;
+  --baseui-layout-margin-desktop: 24px;
+
+  /* Sizes */
+  --baseui-layout-header-height: 64px;
+  --baseui-layout-sidebar-width: 280px;
+  --baseui-layout-settings-width: 280px;
+  --baseui-layout-content-max-width: 1040px;
+  --baseui-layout-dialog-width: 520px;
+  --baseui-layout-mobile-preview-width: 360px;
+
+  /* Breakpoints */
+  --baseui-layout-breakpoint-mobile: 860px;
+  --baseui-layout-breakpoint-sheet: 1200px;
 }
 
 /* ---------- Radius ---------- */
@@ -296,6 +320,12 @@
   --baseui-ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --baseui-ease-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1);
 }
+/* data-motion="off" on <html> does the same for the whole page; "basic" drops the extra effects of "enhanced" (the default) */
+[data-motion="off"] {
+  --baseui-duration-fast: 0ms;
+  --baseui-duration-medium: 0ms;
+  --baseui-duration-slow: 0ms;
+}
 @media (prefers-reduced-motion: reduce) {
   :root {
     --baseui-duration-fast: 0ms;
@@ -317,12 +347,12 @@
 :root {
   --baseui-Typography-Font-Family:var(--font-geist,"Geist"), system-ui, -apple-system, "Segoe UI", sans-serif;
   --baseui-Typography-Font-Family-Mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  --baseui-Typography-Header-48:700 48px / 64px var(--baseui-Typography-Font-Family);
-  --baseui-Typography-Header-40:700 40px / 52px var(--baseui-Typography-Font-Family);
-  --baseui-Typography-Header-32:700 32px / 40px var(--baseui-Typography-Font-Family);
-  --baseui-Typography-Header-28:700 28px / 34px var(--baseui-Typography-Font-Family);
-  --baseui-Typography-Header-24:700 24px / 32px var(--baseui-Typography-Font-Family);
-  --baseui-Typography-Header-20:700 20px / 24px var(--baseui-Typography-Font-Family);
+  --baseui-Typography-Header-48:700 48px / 64px var(--baseui-Typography-Headline-Font-Family, var(--baseui-Typography-Font-Family));
+  --baseui-Typography-Header-40:700 40px / 52px var(--baseui-Typography-Headline-Font-Family, var(--baseui-Typography-Font-Family));
+  --baseui-Typography-Header-32:700 32px / 40px var(--baseui-Typography-Headline-Font-Family, var(--baseui-Typography-Font-Family));
+  --baseui-Typography-Header-28:700 28px / 34px var(--baseui-Typography-Headline-Font-Family, var(--baseui-Typography-Font-Family));
+  --baseui-Typography-Header-24:700 24px / 32px var(--baseui-Typography-Headline-Font-Family, var(--baseui-Typography-Font-Family));
+  --baseui-Typography-Header-20:700 20px / 24px var(--baseui-Typography-Headline-Font-Family, var(--baseui-Typography-Font-Family));
   --baseui-Typography-Text-20-Semi-Bold:600 20px / 26px var(--baseui-Typography-Font-Family);
   --baseui-Typography-Text-20-Regular:400 20px / 26px var(--baseui-Typography-Font-Family);
   --baseui-Typography-Text-16-Bold:700 16px / 22px var(--baseui-Typography-Font-Family);

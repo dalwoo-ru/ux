@@ -90,7 +90,7 @@ export function HeatTable({ rows, cols, count, total }: { rows: string[]; cols: 
               {cols.map((_, ci) => {
                 const n = count(ri, ci);
                 const a = total ? n / total : 0;
-                return <td key={ci} className={s.heat} style={{ background: `color-mix(in srgb, var(--baseui-Background-Accent) ${Math.round(a * 75)}%, transparent)`, color: a > 0.55 ? 'var(--baseui-Text-and-Icon-OnColor)' : 'inherit' }}>{n || ''}</td>;
+                return <td key={ci} className={s.heat} style={{ background: `color-mix(in srgb, var(--baseui-Background-Accent) ${Math.round(a * 75)}%, transparent)`, color: a > 0.55 ? 'var(--baseui-Extensions-Text-and-Icon-OnColor)' : 'inherit' }}>{n || ''}</td>;
               })}
             </tr>
           ))}

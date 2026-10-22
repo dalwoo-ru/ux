@@ -9,7 +9,7 @@ import { Checkbox, Switch } from '../ui/Controls';
 import { useUi } from '../ui/Feedback';
 import { TextField } from '../ui/Field';
 import { Icon } from '../ui/Icon';
-import { Badge, Breadcrumbs, Card, EmptyState, List, ListItem, Modal, Tab, TabList, TabPanel, Table, Tabs } from '../ui/baseui';
+import { Badge, Breadcrumbs, Card, List, ListItem, Modal, Status, Tab, TabList, TabPanel, Table, Tabs } from '../ui/baseui';
 import { cx } from '../ui/cx';
 import type { Block, BlockType, ResponseRow, Test } from '../types';
 import { Topbar } from './Layout';
@@ -72,7 +72,7 @@ export function TestPage() {
       <div className={s.page}>
         <Topbar left={<TestCrumbs title={test.title} />}>
           <span className="muted small">{SAVE_TEXT[save]}</span>
-          <TabList variant="pill" label="Разделы теста">
+          <TabList size="sm" label="Разделы теста">
             <Tab value="build">Конструктор</Tab>
             <Tab value="results">Результаты</Tab>
             <Tab value="share">Поделиться</Tab>
@@ -166,7 +166,7 @@ function Builder({ test, edit }: { test: Test; edit: (p: Partial<Pick<Test, 'tit
           </Card>
         );
       })}
-      {!blocks.length && <EmptyState icon={<Icon name="Plus" size={40} />} title="Добавьте первый блок" description="Блоки — это вопросы и задания, которые увидит респондент" />}
+      {!blocks.length && <Status icon={<Icon name="Plus" size={40} />} title="Добавьте первый блок" description="Блоки — это вопросы и задания, которые увидит респондент" />}
       <div ref={endRef} className={s.addBlock}><Button variant="primary" size="sm" icon={<Icon name="Plus" size={20} />} onClick={() => setPalette(true)}>Добавить блок</Button></div>
 
       <Modal open={palette} onOpenChange={setPalette} title="Добавить блок">
@@ -290,7 +290,7 @@ function Results({ test }: { test: Test }) {
           columns={[
             { key: 'id', header: '#', width: 64 },
             { key: 'started_at', header: 'Начато', renderCell: (r) => fmtDate(r.started_at) },
-            { key: 'completed', header: 'Статус', renderCell: (r) => <Badge variant={r.completed ? 'success' : 'neutral'} label={r.completed ? 'Завершено' : 'Не завершено'} /> },
+            { key: 'completed', header: 'Статус', renderCell: (r) => <Badge variant={r.completed ? 'success' : 'secondary'} label={r.completed ? 'Завершено' : 'Не завершено'} /> },
             { key: 'time', header: 'Время', renderCell: (r) => (r.finished_at ? fmtDuration(r.finished_at - r.started_at) : '—') },
             { key: 'actions', header: '', align: 'end', renderCell: (r) => (
               <IconButton label="Удалить прохождение" variant="ghost" size="xsm" icon={<Icon name="Trash01" size={18} />} onClick={async () => {

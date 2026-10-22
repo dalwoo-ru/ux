@@ -7,7 +7,7 @@
 | Слой | Технологии |
 |---|---|
 | Фронтенд | React 19 + TypeScript + Vite, React Router, CSS Modules |
-| UI | **Дизайн-система [baseui](https://github.com/dalwoo-ru/baseui)**: Button, IconButton, TextField, NumberInput, Checkbox/CheckboxGroup, RadioGroup, Switch, Select, Modal, AlertDialog, Tabs, SegmentedControl, Card/SelectableCard, Table, List/ListItem, Badge, Avatar, Banner, ProgressBar, EmptyState, Breadcrumbs, Toast и др. + токены `--baseui-*` + шрифт Geist, светлая/тёмная тема (`data-theme`) |
+| UI | **Дизайн-система [baseui](https://github.com/dalwoo-ru/baseui)**: Button, IconButton, TextField, NumberInput, Checkbox/CheckboxGroup, RadioGroup, Switch, Select, Modal, AlertDialog, Tabs, SegmentedControl, Card/SelectableCard, Table, List/ListItem, Badge, Avatar, Banner, ProgressBar, Status, Breadcrumbs, Toast и др. + токены `--baseui-*` + шрифт Geist, светлая/тёмная тема (`data-theme`) |
 | Бэкенд | Node-обработчик `lib/handler.js` (без фреймворка), Postgres (`pg`) |
 | Деплой | Vercel: статика из `dist/`, API — функция `api/index.js` |
 

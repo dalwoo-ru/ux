@@ -35,8 +35,9 @@ for (const f of fs.readdirSync(path.join(src, 'lib'))) {
   if (/\.stories-/.test(f) && !neededStories.has(f)) continue;
   fs.copyFileSync(path.join(src, 'lib', f), path.join(out, 'lib', f));
 }
-fs.cpSync(path.join(src, 'src/components'), path.join(out, 'src/components'), { recursive: true });
-for (const f of ['base.js', 'react.js', 'doc.js', 'icons.js', 'index.js', 'components.css']) fs.copyFileSync(path.join(src, 'src', f), path.join(out, 'src', f));
+// src/ целиком, кроме страниц документации (stories, foundations, theming, tools) — они нужны только сайту baseui
+const DOCS_ONLY = new Set(['stories', 'foundations', 'theming', 'tools']);
+fs.cpSync(path.join(src, 'src'), path.join(out, 'src'), { recursive: true, filter: (from) => !DOCS_ONLY.has(path.relative(path.join(src, 'src'), from).split(path.sep)[0]) });
 fs.copyFileSync(path.join(src, 'CHANGELOG.md'), path.join(out, 'CHANGELOG.md'));
 
 // 2. список экспортов для TypeScript

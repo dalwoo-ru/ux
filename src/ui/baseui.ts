@@ -30,7 +30,7 @@ export const Tabs = c<T.TabsProps>(DS.Tabs);
 export const TabList = c<T.TabListProps>(DS.TabList);
 export const Tab = c<T.TabProps>(DS.Tab);
 export const TabPanel = c<T.TabPanelProps>(DS.TabPanel);
-export const EmptyState = c<T.EmptyStateProps>(DS.EmptyState);
+export const Status = c<T.StatusProps>(DS.Status);
 export const Breadcrumbs = c<T.BreadcrumbsProps>(DS.Breadcrumbs);
 export const Table = DS.Table as unknown as <R>(props: T.TableProps<R>) => ReactElement;
 export const List = c<T.ListProps>(DS.List);

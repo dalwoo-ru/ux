@@ -6,7 +6,7 @@ import { fmtDate } from '../lib/util';
 import { Button, IconButton } from '../ui/Button';
 import { useUi } from '../ui/Feedback';
 import { Icon } from '../ui/Icon';
-import { Badge, Card, EmptyState, List, ListItem, Modal, Select, Skeleton } from '../ui/baseui';
+import { Badge, Card, List, ListItem, Modal, Select, Skeleton, Status } from '../ui/baseui';
 import type { Folder, TestSummary } from '../types';
 import { Topbar } from './Layout';
 import s from './pages.module.css';
@@ -97,7 +97,7 @@ export function Dashboard() {
                 {list.map((t) => (
                   <ListItem key={t.id} icon={<Icon name="CheckSquare" size={24} />} onClick={() => nav(`/tests/${t.id}`)}
                     subtitle={`Прохождений: ${t.responses_count} · ${fmtDate(t.updated_at)}${folderId === null && t.folder_id ? ` · ${folders.find((f) => f.id === t.folder_id)?.name ?? ''}` : ''}`}
-                    details={<Badge variant={t.published ? 'success' : 'neutral'} label={t.published ? 'Опубликован' : 'Черновик'} />}
+                    details={<Badge variant={t.published ? 'success' : 'secondary'} label={t.published ? 'Опубликован' : 'Черновик'} />}
                     control={(
                       <span className="row" style={{ gap: 0 }}>
                         <IconButton label="Переместить в папку" variant="ghost" size="xsm" icon={<Icon name="Folder" size={18} />} onClick={() => openMove(t)} />
@@ -111,7 +111,7 @@ export function Dashboard() {
               </List>
             </Card>
           ) : (
-            <EmptyState icon={<Icon name="ClipboardCheck" size={40} />} title="Здесь пока нет тестов" description="Создайте тест, добавьте блоки и поделитесь ссылкой с респондентами"
+            <Status icon={<Icon name="ClipboardCheck" size={40} />} title="Здесь пока нет тестов" description="Создайте тест, добавьте блоки и поделитесь ссылкой с респондентами"
               action={<Button variant="primary" onClick={createTest}>Создать первый тест</Button>} />
           )}
         </main>

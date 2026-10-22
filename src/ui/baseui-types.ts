@@ -9,7 +9,7 @@ type Aria = { 'aria-label'?: string; 'aria-labelledby'?: string; 'data-testid'?:
 export type ButtonProps = Aria & {
   label?: string; children?: ReactNode; variant?: 'primary' | 'secondary' | 'ghost' | 'destructive'; size?: Size4;
   isDisabled?: boolean; isLoading?: boolean; icon?: ReactNode; endContent?: ReactNode; isIconOnly?: boolean;
-  width?: number | string; tooltip?: string; href?: string; target?: string; rel?: string; type?: 'button' | 'submit' | 'reset';
+  width?: number | string; tooltip?: string | false; shape?: 'rounded' | 'circle'; href?: string; target?: string; rel?: string; type?: 'button' | 'submit' | 'reset';
   onClick?: (e: MouseEvent<HTMLElement>) => void; clickAction?: (e: MouseEvent<HTMLElement>) => void | Promise<void>; ref?: Ref<HTMLElement>;
 };
 export type IconButtonProps = Omit<ButtonProps, 'isIconOnly' | 'children' | 'label'> & { icon: ReactNode; label: string };
@@ -63,8 +63,8 @@ export type AlertDialogProps = {
 };
 
 export type BadgeProps = Aria & {
-  variant?: 'neutral' | 'info' | 'success' | 'warning' | 'error' | 'blue' | 'blue-light' | 'green' | 'green-light' | 'orange' | 'pink' | 'red';
-  label?: ReactNode; icon?: ReactNode;
+  variant?: 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error' | 'blue' | 'blue-light' | 'green' | 'green-light' | 'orange' | 'pink' | 'red';
+  size?: 'sm' | 'md' | 'lg'; type?: 'label' | 'counter' | 'dot'; max?: number; disabled?: boolean; label?: ReactNode; icon?: ReactNode;
 };
 export type AvatarProps = Aria & {
   name?: string; src?: string; fallbackSrc?: string; alt?: string; size?: Size5 | number; shape?: 'circle' | 'rounded' | 'square';
@@ -82,10 +82,13 @@ export type SegmentedControlProps = Aria & {
   value?: string; defaultValue?: string; onValueChange?: (v: string) => void; size?: 'sm' | 'md'; fullWidth?: boolean; iconOnly?: boolean; label?: string;
 };
 export type TabsProps = { value?: string; defaultValue?: string; onValueChange?: (v: string) => void; children?: ReactNode };
-export type TabListProps = { variant?: 'underline' | 'pill'; label?: string; children?: ReactNode };
+export type TabListProps = { size?: 'sm' | 'md' | 'lg' | 'xl'; fullWidth?: boolean; label?: string; children?: ReactNode };
 export type TabProps = { value: string; disabled?: boolean; children?: ReactNode };
 export type TabPanelProps = { value: string; children?: ReactNode };
-export type EmptyStateProps = Aria & { icon?: ReactNode; title?: ReactNode; description?: ReactNode; action?: ReactNode };
+export type StatusProps = Aria & {
+  status?: 'neutral' | 'accent' | 'success' | 'warning' | 'error'; icon?: ReactNode; title?: ReactNode; description?: ReactNode; action?: ReactNode;
+  actionLabel?: string; actionVariant?: 'primary' | 'secondary'; onAction?: () => void;
+};
 export type BreadcrumbsProps = Aria & { items: Array<{ label: ReactNode; href?: string; onClick?: (e: MouseEvent<HTMLElement>) => void }>; label?: string };
 export type TableProps<T> = Aria & {
   data?: T[]; columns?: Array<{ key: string; header?: ReactNode; width?: number | unknown; align?: 'start' | 'center' | 'end'; sortable?: boolean; sortValue?: (row: T) => unknown; renderCell?: (row: T) => ReactNode }>;
@@ -93,9 +96,9 @@ export type TableProps<T> = Aria & {
   isStriped?: boolean; hasHover?: boolean; onRowClick?: (row: T) => void; isLoading?: boolean; emptyState?: ReactNode; maxHeight?: number | string;
 };
 
-export type ListProps = Aria & { size?: 'md' | 'sm' | 'xsm'; title?: ReactNode; divider?: boolean; children?: ReactNode };
+export type ListProps = Aria & { size?: 'md' | 'sm'; spacing?: 'sm' | 'md' | 'lg'; title?: ReactNode; divider?: boolean; children?: ReactNode };
 export type ListItemProps = Aria & {
-  size?: 'md' | 'sm' | 'xsm'; children?: ReactNode; subtitle?: ReactNode; details?: ReactNode; icon?: ReactNode; avatar?: ReactNode; control?: ReactNode;
+  size?: 'md' | 'sm'; children?: ReactNode; subtitle?: ReactNode; overline?: ReactNode; details?: ReactNode; icon?: ReactNode; avatar?: ReactNode; control?: ReactNode;
   items?: ReactNode; subitem?: boolean; active?: boolean; disabled?: boolean; onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 };
 export type ChipProps = Aria & {
@@ -109,7 +112,7 @@ export type StackProps = Aria & {
   justify?: 'start' | 'center' | 'end' | 'between' | 'around'; wrap?: boolean; as?: ElementType; children?: ReactNode;
 };
 export type StackShorthandProps = Omit<StackProps, 'direction'>;
-export type SpinnerProps = { size?: 'sm' | 'md' | 'lg' | number; label?: string };
+export type SpinnerProps = { size?: 'xsm' | 'sm' | 'md' | 'lg' | number; color?: 'primary' | 'secondary' | 'accent' | 'success' | 'warning' | 'error' | 'on-color' | 'inherit' };
 export type SkeletonProps = { variant?: 'text' | 'rect' | 'circle'; width?: number | string; height?: number | string; lines?: number };
 export type TooltipProps = { content: ReactNode; placement?: 'top' | 'bottom' | 'left' | 'right'; delay?: number; children: ReactElement };
 export type ToastProviderProps = { placement?: 'bottom-right' | 'bottom-center' | 'top-right' | 'top-center'; limit?: number; children?: ReactNode };
