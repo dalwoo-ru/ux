@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic"
 
 export default async function Page({ params }: { params: Promise<{ shareId: string }> }) {
   const { shareId } = await params
-  const test = getPublicTest(shareId)
+  const test = await getPublicTest(shareId)
   if (!test) notFound()
   return <Runner shareId={shareId} title={test.title} description={test.description} blocks={test.blocks} />
 }

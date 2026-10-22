@@ -14,10 +14,10 @@ import { cn } from "@/lib/utils"
 
 export default async function Dashboard({ searchParams }: { searchParams: Promise<{ folder?: string }> }) {
   const user = await requireUser()
-  const folders = listFolders(user.id)
+  const folders = await listFolders(user.id)
   const { folder } = await searchParams
   const current = folders.find((f) => f.id === folder) ?? null
-  const tests = listTests(user.id, current?.id ?? null)
+  const tests = await listTests(user.id, current?.id ?? null)
 
   const navItem = (active: boolean) =>
     cn("flex items-center gap-2 rounded-md px-3 py-2 text-sm hover:bg-accent", active && "bg-accent font-medium")
